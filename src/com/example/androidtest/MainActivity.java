@@ -68,6 +68,7 @@ import android.widget.ToggleButton;
 
 public class MainActivity extends Activity {
 
+/*	
 	private Button simplebutton = null;
 	private Button compixbutton = null;
 	
@@ -120,6 +121,7 @@ public class MainActivity extends Activity {
 		});
 	
 	}
+*/	
 /*	
 	private ImageView imageview = null;
 	private TextView textview =null;
