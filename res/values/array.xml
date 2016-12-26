@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array  name="books">
+        <item >书11111</item>
+        <item >书22222</item>
+        <item >书33333</item>
+        <item >书44444</item>
+        <item >书55555</item>
+        <item >书66666</item>
+        <item >书77777</item>
+        <item >书88888</item>
+        <item >书99999</item>
+        <item >书aaaaa</item>
+        <item >书bbbbb</item>        
+    </string-array>
+    
+    <string-array  name = "spinner_books">
+        <item >书11111</item>
+        <item >书22222</item>
+        <item >书33333</item>
+        <item >书44444</item>
+    </string-array>
+</resources>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="我的JAVA"
+        android:textSize="20pt" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="我的斯JAVAAAAAAaaaa的jew黄风洞we哈佛我==32223232323232=="
+        android:ellipsize="middle"
+        android:textAllCaps="true" />
+    
+    <TextView 
+        android:id="@+id/textview3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="邮件 dingzhenjin@seuic.com  tel:15861815284"
+        android:autoLink="email|phone"/>
+    
+	<TextView 
+        android:id="@+id/textview4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="阴影测试 uyyguygyygu启哇哇委托方兔兔文字Text"
+        android:shadowColor="#00f"
+        android:shadowDx="6.0"
+        android:shadowDy="4.0"
+        android:shadowRadius="3.0"
+        android:textColor="#f0f"
+        android:textSize="18pt"/>
+        
+	<TextView
+        android:id="@+id/textview5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:password="true"
+        android:text="2134567" />
+
+	<CheckedTextView
+        android:id="@+id/checkedTextView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkMark="@color/color1"
+        android:checked="true"
+        android:text="C可以勾选的文本" />
+       
+	<TextView
+		android:id="@+id/textview6"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:text="带边框的文本"
+		android:textSize="12pt" 
+		android:textColor="@color/color2"
+		android:background="@drawable/bg_border"/>       
+             
+	<TextView
+	    android:id="@+id/textview6"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="8dp"
+	    android:background="@drawable/bg_border2"
+	    android:gravity="center"
+	    android:text="带圆角边框、渐变背景的文本"
+	    android:textSize="24pt" />
+
+  "
+
+</LinearLayout>
