@@ -3,12 +3,14 @@ package com.example.androidtest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.content.Intent;
 import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,10 +26,16 @@ import android.os.Message;
 import android.R.array;
 import android.R.integer;
 import android.R.string;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager.Request;
 import android.app.ExpandableListActivity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TabActivity;
 import android.support.v7.widget.GridLayout;
+import android.text.TextUtils;
 import android.text.method.SingleLineTransformationMethod;
 import android.text.method.TransformationMethod;
 import android.view.Gravity;
@@ -50,30 +58,225 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.DatePicker;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
+import android.widget.SearchView;
 import android.widget.SeekBar;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class MainActivity extends Activity {
+	
+	final int NOTIFICATION_ID = 0x123;
+	NotificationManager notificationManager = null;
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.linearlayout_notification);
+		
+		notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+	}
+	
+	public void send(View source){
+		Intent intent = new Intent();
+		
+		PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, 0);
+		
+		Notification notification = new Notification.Builder(this)
+			.setAutoCancel(true)
+			.setTicker("有新消息-提示文本")
+			.setSmallIcon(R.drawable.image1)
+			.setContentTitle("通知内容标题")
+			.setContentText("这是Notification的实际内容")
+			.setDefaults(Notification.DEFAULT_ALL)
+			.setWhen(System.currentTimeMillis())
+			.setContentIntent(pendingIntent)
+			.build();
+		
+		notificationManager.notify(NOTIFICATION_ID, notification);
+		
+	}
+	
+	public void cancel(View source){
+		notificationManager.cancel(NOTIFICATION_ID);
+	}
+/*	
+	/* MainActivity 需要继承  TabActivity *//*
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.tabhost);
+		
+		TabHost tabHost  = getTabHost();
+		
+		TabSpec  tabSpec1 = tabHost.newTabSpec("tab01").setIndicator("已接电话").setContent(R.id.tab01);
+		tabHost.addTab(tabSpec1);
+		
+		TabSpec  tabSpec2 = tabHost.newTabSpec("tab02").setIndicator("呼出电话").setContent(R.id.tab02);
+		tabHost.addTab(tabSpec2);
+		
+		TabSpec  tabSpec3 = tabHost.newTabSpec("tab03").setIndicator("未接电话").setContent(R.id.tab03);
+		tabHost.addTab(tabSpec3);
+	}
+*/	
+/*	
+	ListView listView = null;
+	SearchView searchView = null;
+	String[] arrString = new String[]{
+			"aaaaaaaa",
+			"aaaawddddqd",
+			"bbbbbbb",
+			"中国人的慰问",
+			"32222222222",
+	};
+	
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.linearlayout_searchview);
+		
+		listView = (ListView)findViewById(R.id.searchlistView1);
+		
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrString);
+		listView.setAdapter(adapter);
+		listView.setTextFilterEnabled(true);
+		
+		searchView = (SearchView)findViewById(R.id.searchView);
+		searchView.setIconifiedByDefault(true);
+		searchView.setSubmitButtonEnabled(true);
+		searchView.setQueryHint("查找");
+		
+		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				// TODO Auto-generated method stub
+				Toast.makeText(MainActivity.this, "查找内容"+query, Toast.LENGTH_SHORT).show();
+				return true;
+			}
+			
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				// TODO Auto-generated method stub
+				if(TextUtils.isEmpty(newText)){
+					listView.clearTextFilter();
+				}else{
+					listView.setFilterText(newText);
+				}
+				return true;				
+			}
+		});
+		
+	}
+*/	
+/*	
+	NumberPicker numberPicker = null;
+	
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.linearlayout_numberpicker);
+		
+		numberPicker = (NumberPicker)findViewById(R.id.numberPicker);
+		
+		numberPicker.setMinValue(20);
+		numberPicker.setMaxValue(60);
+		numberPicker.setValue(35);
+		
+		numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+			
+			@Override
+			public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+				// TODO Auto-generated method stub
+				Toast.makeText(MainActivity.this, "你选择的号码:"+newVal+"之前的号码:"+oldVal, Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
+*	
+/*	
+	private DatePicker datePicker = null;
+	private TimePicker timePicker = null;
+	private TextView textView = null;
+	 int year;
+	 int month;
+	 int monthday;
+	 int hour;
+	 int minute;
+	
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.linearlayout_picker);
+		
+		datePicker = (DatePicker)findViewById(R.id.datePicker);
+		timePicker = (TimePicker)findViewById(R.id.timePicker);
+		
+		Calendar calendar = Calendar.getInstance();
+		year     = calendar.get(Calendar.YEAR);
+		month    = calendar.get(Calendar.MONTH);
+		monthday = calendar.get(Calendar.DAY_OF_MONTH);
+		hour     = calendar.get(Calendar.HOUR);
+		minute   = calendar.get(Calendar.MINUTE);
+		
+		datePicker.init(year, month, monthday, new DatePicker.OnDateChangedListener() {
+			
+			@Override
+			public void onDateChanged(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				// TODO Auto-generated method stub
+				MainActivity.this.year   = year;
+				MainActivity.this.month  = monthOfYear;
+				MainActivity.this.monthday = dayOfMonth;
+				showSelectDate(year,month,monthday,hour,minute);
+			}
+		});
+		
+		timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+			
+			@Override
+			public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+				// TODO Auto-generated method stub
+				hour = hourOfDay;
+				minute = minute;
+				showSelectDate(year,month,monthday,hour,minute);
+			}
+		});
+	}
+	
+	@SuppressLint("ResourceAsColor")
+	private void showSelectDate(int year,int month,int monthday,int hour,int minute){
+		
+		textView   = (TextView)findViewById(R.id.pickshow);
+		textView.setText( year+"年"+(month+1)+"月"+monthday+ "号  "+hour+":"+minute);
+		textView.setTextColor(R.color.color1);
+	}
 
+*/
+
+
+/*	
 	private CalendarView calendarView = null;
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.linearlayout_calendarview);
 		calendarView  = (CalendarView)findViewById(R.id.calendar);
+		Calendar calendar = Calendar.getInstance();
+		int year   = calendar.get(Calendar.YEAR);
+		int month  = calendar.get(Calendar.MONTH);
+		int monthday = calendar.get(Calendar.MONDAY);
+		
 		calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 			
 			@Override
@@ -84,7 +287,7 @@ public class MainActivity extends Activity {
 			}
 		});
 	}	
-	
+*/	
 /*	
 	private Button simplebutton = null;
 	private Button compixbutton = null;

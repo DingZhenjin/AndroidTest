@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图" 
+                android:textSize="20dp"/>
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图" />
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图" />
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图" />
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图" />
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图" />
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图" />                        
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图" />
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图" />            
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图" />
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图" />
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图" />
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图" />                        
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图" />
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图滚动视图" />  
+            
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</ScrollView>
