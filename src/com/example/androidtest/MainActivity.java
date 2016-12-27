@@ -44,6 +44,7 @@ import android.widget.AdapterViewFlipper;
 import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -68,6 +69,22 @@ import android.widget.ToggleButton;
 
 public class MainActivity extends Activity {
 
+	private CalendarView calendarView = null;
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.linearlayout_calendarview);
+		calendarView  = (CalendarView)findViewById(R.id.calendar);
+		calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+			
+			@Override
+			public void onSelectedDayChange(CalendarView view, int year, int month,
+					int dayOfMonth) {
+				// TODO Auto-generated method stub
+				Toast.makeText(MainActivity.this, year+"Äê"+(month+1)+"ÔÂ"+dayOfMonth+ "ºÅ", Toast.LENGTH_SHORT).show();
+			}
+		});
+	}	
+	
 /*	
 	private Button simplebutton = null;
 	private Button compixbutton = null;
