@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/vibrator_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开启振动器" />
+
+    <Button
+        android:id="@+id/vibrator_start_repeat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="间隔开启振动器" />
+
+    <Button
+        android:id="@+id/vibrator_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="关闭" />
+
+</LinearLayout>

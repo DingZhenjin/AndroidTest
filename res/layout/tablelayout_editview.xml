@@ -18,7 +18,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/editvieweditText1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="请输入登陆账号"
@@ -61,7 +61,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/editvieweditText3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number" />
@@ -107,11 +107,11 @@
     </TableRow>
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/logbutton1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/color6"
-        android:text="登陆" />
+        android:text="注册" />
 
     <TextView
         android:id="@+id/textView8"

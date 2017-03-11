@@ -14,10 +14,49 @@
         <item >书bbbbb</item>        
     </string-array>
     
+    <string-array name="statusName">
+        <item >设备编号                      </item>
+        <item >软件版本                      </item>
+        <item >网络运营商代码       </item>
+        <item >网络运营商名称       </item>
+        <item >手机制式                      </item>
+        <item >设备当前位置            </item>
+        <item >SIM卡国别                   </item>
+        <item >SIM卡序列号               </item>
+        <item >SIM卡状态                    </item>
+        <item >statusName10</item>
+        <item >statusName11</item>
+        <item >statusName12</item>
+ 
+    </string-array>
+    
+    <string-array name="simstate">
+        <item >simstate111</item>
+        <item >simstate222</item>
+        <item >simstate333</item>
+        <item >simstate444</item>
+        <item >simstate555</item>
+        <item >simstate666</item>
+        <item >simstate777</item>
+        <item >simstate888</item> 
+    </string-array>
+    
+     <string-array name="phonetype">
+        <item >phonetype111</item>
+        <item >phonetype222</item>
+        <item >phonetype333</item>
+        <item >phonetype444</item>
+        <item >phonetype555</item>
+        <item >phonetype666</item>
+        <item >phonetype777</item>
+        <item >phonetype888</item>
+        <item >phonetype999</item>  
+    </string-array>
     <string-array  name = "spinner_books">
         <item >书11111</item>
         <item >书22222</item>
         <item >书33333</item>
         <item >书44444</item>
     </string-array>
+    
 </resources>

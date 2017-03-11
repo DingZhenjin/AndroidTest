@@ -1,17 +1,54 @@
 package com.example.androidtest;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.Serializable;
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.security.auth.PrivateCredentialPermission;
+
+import org.w3c.dom.Comment;
+
+import com.seuic.android.PosdService;
+
+
+import com.seuic.extra.lightpay.LightPayFuncs;
+import com.seuic.extra.lightpay.LightPayListener;
+
+import com.seuic.util.HexUtil;
+
+
+import android.content.ComponentName;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.AssetManager;
+import android.content.res.Configuration;
+import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
+import android.gesture.GestureOverlayView;
+import android.gesture.GestureOverlayView.OnGestureListener;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -20,31 +57,65 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.camera2.params.RggbChannelVector;
 import android.media.ExifInterface;
+import android.net.Uri;
+import android.net.wifi.p2p.WifiP2pManager.ActionListener;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
+import android.os.RemoteException;
+import android.os.Vibrator;
 import android.R.array;
+import android.R.bool;
 import android.R.integer;
 import android.R.string;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
+import android.app.ActionBar.TabListener;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.ActionBar.Tab;
 import android.app.DownloadManager.Request;
+import android.app.AlertDialog;
 import android.app.ExpandableListActivity;
+import android.app.Fragment;
 import android.app.Notification;
+import android.app.Notification.Action;
+import android.app.FragmentTransaction;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
+import android.app.Service;
 import android.app.TabActivity;
+import android.app.TimePickerDialog;
+import android.speech.tts.TextToSpeech;
+import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.GridLayout;
+import android.telephony.TelephonyManager;
+import android.text.Editable.Factory;
 import android.text.TextUtils;
 import android.text.method.SingleLineTransformationMethod;
 import android.text.method.TransformationMethod;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Display;
+import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
+import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -59,6 +130,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -66,6 +138,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.NumberPicker;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
@@ -76,13 +150,1778 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-public class MainActivity extends Activity {
+
+public class MainActivity extends Activity{
+	final String TAG = "--CrazyIt--";
+
+	String[] fileStrings = null;
+	AssetManager asserts = null;
+	ImageView imageView = null;
+	Button bnButton = null;
+	int imagecount = 0;
 	
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.linearlayout_bitmap);
+		
+		imageView = (ImageView)findViewById(R.id.bitmap_imageView);
+		try {
+			asserts = getAssets();
+			fileStrings = asserts.list("");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		bnButton = (Button)findViewById(R.id.bitmap_bn);
+		bnButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if(imagecount >= fileStrings.length){
+					imagecount = 0;
+				}
+				while(!fileStrings[imagecount].endsWith(".png") && 
+					  !fileStrings[imagecount].endsWith(".jpg") &&
+					  !fileStrings[imagecount].endsWith(".JPG") &&
+					  !fileStrings[imagecount].endsWith(".gif")){
+					
+					imagecount++;
+					if(imagecount >= fileStrings.length){
+						imagecount = 0;
+					}
+				}
+				
+				InputStream inputStream = null;
+				try {
+					inputStream = asserts.open(fileStrings[imagecount++]);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+				
+				BitmapDrawable bitmapDrawable = (BitmapDrawable)imageView.getDrawable();
+				if(bitmapDrawable !=null && !bitmapDrawable.getBitmap().isRecycled()){
+					//bitmapDrawable.getBitmap().recycle();
+				}
+				imageView.setImageBitmap(BitmapFactory.decodeStream(inputStream));
+			}
+		});
+		
+	}	
+	
+/*	
+	EditText urleditText = null;
+	Button bnButton = null;
+	WebView showWebView = null;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.linearlayout_webview);
+		
+		urleditText = (EditText)findViewById(R.id.webview_edit);
+		showWebView =(WebView)findViewById(R.id.webview_show);
+		bnButton = (Button)findViewById(R.id.webview_bn);
+		bnButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String url = urleditText.getText().toString();
+				showWebView.loadUrl(url);
+			}
+		});
+	}	
+*/	
+	
+/*	
+	ImageView imageView = null;
+	Bitmap bitmap = null;
+	Handler handler = new Handler(){
+		@Override
+		public void handleMessage(Message msg){
+			if(msg.what == 0x123){
+				if(bitmap != null && imageView !=null){
+					imageView.setImageBitmap(bitmap);
+				}
+			}
+		}
+	};
+	
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.linearlayout_url);
+		
+		imageView = (ImageView)findViewById(R.id.url);
+		
+		new Thread(){
+			@Override
+			public void run(){
+				try {
+					URL url = new URL("http://www.crazyit.org/"
+							+"attachments/month_1008/20100812_7763e970f"
+							+"822325bfb019ELQVym8tW3A.png");
+					InputStream isInputStream = url.openStream();
+					bitmap = BitmapFactory.decodeStream(isInputStream);
+					handler.sendEmptyMessage(0x123);
+					isInputStream.close();
+					
+					isInputStream = url.openStream();
+					OutputStream os = openFileOutput("crazyit.png", MODE_PRIVATE);
+					byte[] buffer = new byte[1024];
+					int hasread = 0;
+					while((hasread = isInputStream.read(buffer))>0){
+						os.write(buffer, 0, hasread);
+					}
+					isInputStream.close();
+					os.close();
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			}
+		}.start();
+	}
+
+*/	
+		
+		
+/*	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.linearlayout_recviver);
+		
+		Button send = (Button)findViewById(R.id.receiver_send);
+		send.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setAction("com.example.androidtest.MyReceiver");
+				intent.putExtra("msg", "一个简单的信息交互");
+				sendOrderedBroadcast(intent, null);
+			}
+		});
+	}
+	
+*/	
+	
+/*	
+	
+	Vibrator vibrator;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.linearlayout_vibrator);
+		
+		vibrator = (Vibrator)getSystemService(Service.VIBRATOR_SERVICE);
+		
+		Button startButton = (Button)findViewById(R.id.vibrator_start);
+		startButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				vibrator.vibrate(1000);
+			}
+		});
+		
+		Button startrepeatButton = (Button)findViewById(R.id.vibrator_start_repeat);
+		startrepeatButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				vibrator.vibrate(new long[]{100,400,800,1200,1600}, 6);
+			}
+		});
+		
+		Button stopButton = (Button)findViewById(R.id.vibrator_stop);
+		stopButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				vibrator.cancel();
+			}
+		});
+	}	
+*/	
+/*	
+	ListView listView = null;
+	String[] statusNames;
+	ArrayList<String> statusvalueArrayList = new ArrayList<String>();
+	
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.linearlayout_maintest);
+		
+		TelephonyManager tmanagerManager =(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+		statusNames = getResources().getStringArray(R.array.statusName);
+		String[] simstateStrings = getResources().getStringArray(R.array.simstate);
+		String[] phoneType = getResources().getStringArray(R.array.phonetype);
+		
+		String string = tmanagerManager.getDeviceId();
+		
+		statusvalueArrayList.add(string);
+		statusvalueArrayList.add(tmanagerManager.getDeviceSoftwareVersion() !=null?
+				tmanagerManager.getDeviceSoftwareVersion():"未知");
+		
+		statusvalueArrayList.add(tmanagerManager.getNetworkOperator());
+		statusvalueArrayList.add(tmanagerManager.getNetworkOperatorName());
+		statusvalueArrayList.add(phoneType[tmanagerManager.getPhoneType()]);
+		statusvalueArrayList.add(tmanagerManager.getCellLocation()!=null?
+				tmanagerManager.getCellLocation().toString():"未知");
+		statusvalueArrayList.add(tmanagerManager.getSimCountryIso());
+		statusvalueArrayList.add(tmanagerManager.getSimSerialNumber());
+		statusvalueArrayList.add(simstateStrings[tmanagerManager.getSimState()]);
+	
+		listView = (ListView)findViewById(R.id.listmain);
+		ArrayList<Map<String, String>> statusArrayList = new ArrayList<Map<String,String>>();
+		
+		for(int i =0;i<statusvalueArrayList.size();i++){
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("name", statusNames[i]);
+			map.put("value", statusvalueArrayList.get(i));
+			statusArrayList.add(map);
+		}
+		
+		SimpleAdapter adapter = new SimpleAdapter(this,statusArrayList,R.layout.linearlayout_line,
+				new String[]{"name","value"},
+				new int[]{R.id.line_title,R.id.line_content});
+		listView.setAdapter(adapter);
+	}
+
+*/	
+	
+/*	
+	BindService.MyBinder binder = null;
+	Button startServiceButton = null;
+	Button stopServiceButton = null;
+	Button getServiceInfoButton = null;
+	
+	private ServiceConnection connection = new ServiceConnection() {
+		
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			// TODO Auto-generated method stub
+			Toast.makeText(MainActivity.this, "启动Service DisConnect", Toast.LENGTH_SHORT).show();
+		}
+		
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			// TODO Auto-generated method stub
+			binder =(BindService.MyBinder)service;
+			Toast.makeText(MainActivity.this, "启动Service Connect", Toast.LENGTH_SHORT).show();
+		}
+	};
+	
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.linearlayout_service);
+		
+		final Intent intent = new Intent(this,BindService.class);	
+		
+		startServiceButton = (Button)findViewById(R.id.service_start);
+		startServiceButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				bindService(intent, connection, BIND_AUTO_CREATE);
+				Toast.makeText(MainActivity.this, "绑定Service Connect", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		stopServiceButton = (Button)findViewById(R.id.service_stop);
+		stopServiceButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				unbindService(connection);
+				Toast.makeText(MainActivity.this, "解除Service Connect", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		
+		getServiceInfoButton = (Button)findViewById(R.id.service_info);
+		getServiceInfoButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+				Toast.makeText(MainActivity.this, "Service Connect info"+binder.getCount(), Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
+	
+*/	
+/* startService 只是启动一个Server，此应用和调用的Service没有联系 */	
+/*
+	Button startServiceButton = null;
+	Button stopServiceButton = null;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.linearlayout_service);
+		
+		startServiceButton = (Button)findViewById(R.id.service_start);
+		stopServiceButton = (Button)findViewById(R.id.service_stop);
+		
+		final Intent intent = new Intent();
+		intent.setPackage("com.example.androidtest2");
+		intent.setAction("com.example.androidtest2.FirstService");
+		
+		startServiceButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				startService(intent);
+			}
+		});
+		
+		stopServiceButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				stopService(intent);
+			}
+		});
+	}	
+*/	
+	
+/*	
+	ContentResolver contentResolver;
+	Uri uri = Uri.parse("content://com.example.androidtest2.SecondProvider/");
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.linearlayout_provider);
+		
+		contentResolver = getContentResolver();
+		
+		Button query = (Button)findViewById(R.id.provide_query);
+		query.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Cursor cursor = contentResolver.query(uri, null, "query_where", null, null);
+				Toast.makeText(MainActivity.this, "远程ContentProvider返回的Cursor为： "+cursor, Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		Button insert = (Button)findViewById(R.id.provide_insert);
+		insert.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				ContentValues contentValues = new ContentValues();
+				contentValues.put("studentname", "dingzhnjin");
+				Uri newUri =  contentResolver.insert(uri, contentValues);
+			
+				Toast.makeText(MainActivity.this, "远程ContentProvider返回的newUri为： "+newUri, Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		Button update = (Button)findViewById(R.id.provide_update);
+		update.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				ContentValues contentValues = new ContentValues();
+				contentValues.put("studentname", "wqdwqd");
+				int count = contentResolver.update(uri, contentValues, "update_where", null);
+				Toast.makeText(MainActivity.this, "远程ContentProvider返回的newUri为： "+count, Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		Button detele = (Button)findViewById(R.id.provide_delete);
+		detele.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				int count = contentResolver.delete(uri, "update_where", null);
+				Toast.makeText(MainActivity.this, "远程ContentProvider返回的newUri为： "+count, Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
+	
+*/	
+	
+/*	
+	final static String FILE_NAME = "crazyit.bin";
+	
+	TextToSpeech tts;
+	EditText edittext;
+	Button speakButton;
+	Button recordButton;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.linearlayout);
+		
+		tts = new TextToSpeech(this,new TextToSpeech.OnInitListener() {
+			
+			@Override
+			public void onInit(int status) {
+				// TODO Auto-generated method stub
+				if(status == TextToSpeech.SUCCESS){
+					int result = tts.setLanguage(Locale.US);
+					if(result != TextToSpeech.LANG_COUNTRY_AVAILABLE &&
+						result != TextToSpeech.LANG_AVAILABLE){
+						Toast.makeText(MainActivity.this, "暂不支持", Toast.LENGTH_SHORT).show();
+					}
+				}
+			}
+		});
+		
+		edittext = (EditText)findViewById(R.id.tts_edittext);
+		speakButton =(Button)findViewById(R.id.tts_speak);
+		recordButton =(Button)findViewById(R.id.tts_record);
+		
+		speakButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				tts.speak(edittext.getText().toString(), TextToSpeech.QUEUE_ADD, null,"speech");
+			}
+		});
+		
+		recordButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				tts.synthesizeToFile(edittext.getText().toString(), null, new File("/mnt/sdcard/sound.wav"), "record");
+			}
+		});
+		
+	}
+*/
+/*	
+	GestureDetector detector;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.linearlayout_gesture);
+		detector = new GestureDetector(this,this);
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent me){
+		return detector.onTouchEvent(me);
+		
+	}
+	
+
+	@Override
+	public boolean onDown(MotionEvent arg0) {
+		// TODO Auto-generated method stub
+		Toast.makeText(MainActivity.this, "onDown is happen", Toast.LENGTH_SHORT).show();
+		return false;
+	}
+
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocityY) {
+		Toast.makeText(MainActivity.this, "onFling is happen", Toast.LENGTH_SHORT).show();
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void onLongPress(MotionEvent e) {
+		// TODO Auto-generated method stub
+		Toast.makeText(MainActivity.this, "onLongPress is happen", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+			float distanceY) {
+		// TODO Auto-generated method stub
+		Toast.makeText(MainActivity.this, "onScroll is happen", Toast.LENGTH_SHORT).show();
+		return false;
+	}
+
+	@Override
+	public void onShowPress(MotionEvent e) {
+		// TODO Auto-generated method stub
+		Toast.makeText(MainActivity.this, "onShowPress is happen", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public boolean onSingleTapUp(MotionEvent e) {
+		// TODO Auto-generated method stub
+		Toast.makeText(MainActivity.this, "onSingleTapUp is happen", Toast.LENGTH_SHORT).show();
+		return false;
+	}
+	
+	
+
+	*/
+	
+/*	
+	private SQLiteDatabase dbDatabase = null;
+	private Button bn = null;
+	private ListView listView = null;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.linearlayout_database);
+		Log.d(TAG, "onCreate 运行...");
+	
+		dbDatabase = SQLiteDatabase.openOrCreateDatabase(this.getFilesDir().toString()+"/my.db3", null);
+		
+		listView = (ListView)findViewById(R.id.database_listview);
+		bn = (Button)findViewById(R.id.database_bn);
+		
+		bn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String titleString = ((EditText)findViewById(R.id.database_title)).getText().toString();
+				String contentString = ((EditText)findViewById(R.id.database_content)).getText().toString();
+				try {
+					insertData(dbDatabase,titleString,contentString);
+					Cursor cursor = dbDatabase.rawQuery("select * from news_inf", null);
+					inflateList(cursor);
+				} catch (Exception e) {
+					// TODO: handle exception
+					dbDatabase.execSQL("create table news_inf(_id integer"
+							+" primary key autoincrement,"
+							+" news_title varchar(50),"
+							+" news_content varchar(255))");
+					insertData(dbDatabase, titleString, contentString);
+					
+					Cursor cursor = dbDatabase.rawQuery("select *from news_inf", null);
+					inflateList(cursor);
+				}
+			}
+		});	
+	}
+	
+	private void insertData(SQLiteDatabase db,String title,String content){
+		dbDatabase.execSQL("insert into news_inf values(null,?,?)", new String[]{title,content});
+	}
+	
+	private void inflateList(Cursor cursor){
+		SimpleCursorAdapter adapter = new SimpleCursorAdapter(MainActivity.this, R.layout.linearlayout_line, cursor,
+				new String[]{"news_title","news_content"}, new int[]{R.id.line_title,R.id.line_content}, 
+				CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+		listView.setAdapter(adapter);
+		
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		if(dbDatabase != null && dbDatabase.isOpen()){
+			dbDatabase.close();
+		}
+	}
+	
+*/	
+	
+/*	
+	private TextView readtxTextView;
+	private EditText writetxTextView;
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.linearlayout_file);
+		Log.d(TAG, "onCreate 运行...");
+
+		Button readButton = (Button)findViewById(R.id.file_readbn);
+		Button writeButton = (Button)findViewById(R.id.file_writebn);
+		readtxTextView = (TextView)findViewById(R.id.file_readtx);
+		writetxTextView = (EditText)findViewById(R.id.file_writetx);
+		
+		readButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				readtxTextView.setText(read());
+			}
+		});
+		
+		writeButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				write(writetxTextView.getText().toString());
+				writetxTextView.setText("");
+			}
+		});
+		
+		
+	}
+	
+	
+	
+	private String read(){
+		try {
+			FileInputStream fis = openFileInput(FILE_NAME);
+			byte[] buffer = new byte[1024];
+			int readnum = 0;
+			StringBuilder sbBuilder  = new StringBuilder("");
+			
+			while((readnum = fis.read(buffer)) > 0){
+				sbBuilder.append(new String(buffer,0,readnum));
+			}
+			fis.close();
+			
+			return sbBuilder.toString();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	
+	private void write(String content){
+		try {
+			FileOutputStream fos = openFileOutput(FILE_NAME, MODE_APPEND);
+			PrintStream ps = new PrintStream(fos);
+			ps.println(content);
+			ps.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+*/	
+	
+/*	
+	SharedPreferences preferences = null;
+	SharedPreferences.Editor editor = null;
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.linerarlayout_sharepreferences);
+		Log.d(TAG, "onCreate 运行...");
+		
+		preferences = getSharedPreferences("fileedit", MODE_PRIVATE);
+		editor = preferences.edit();
+		
+		Button readButton = (Button)findViewById(R.id.share_bn1);
+		Button writeButton = (Button)findViewById(R.id.share_bn2);
+		Button clearButton = (Button)findViewById(R.id.share_bn3);
+		
+		TextView tx = (TextView)findViewById(R.id.share_tx);
+		
+		int startcount = preferences.getInt("startcount", 0);
+		editor.putInt("startcount", ++startcount);
+		editor.commit();
+		tx.setText("启动次数: "+startcount);
+		readButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String timeString =  preferences.getString("time", null);
+				int randnum = preferences.getInt("randrom", 0);
+				
+				String resultString = timeString==null?"数据未写入数据":"写入时间: "+timeString+"\n随机数: "+randnum;
+				
+				Toast.makeText(MainActivity.this, resultString, Toast.LENGTH_LONG).show();
+				
+			}
+		});
+		
+		writeButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年 MM月 dd日 "+"hh:mm:ss");
+				editor.putString("time", simpleDateFormat.format(new Date()));
+				editor.putInt("randrom", (int)(Math.random()*100));
+				editor.commit();
+			}
+		});
+		
+		clearButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+				editor.clear();
+				editor.commit();
+				
+				Toast.makeText(MainActivity.this, "删除完成", Toast.LENGTH_SHORT).show();
+				
+			}
+		});
+		
+	}
+	
+*/	
+/*
+	final String TAG = "--CrazyIt--";
+	public final static String CRAZYIT_ACTION ="com.example.androidtest.action.CRAZYIT_ACTION";  
+	public final static String CRAZYIT_CATEGORY = "com.example.androidtest.action.CRAZYIT_CATEGORY";
+	
+	TextView tx = null;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.linearlayout_main);
+		Log.d(TAG, "onCreate 运行...");
+		
+		Button startActivityButton = (Button)findViewById(R.id.main_startnewactivity);
+		Button finishButton = (Button)findViewById(R.id.main_finish);
+		Button bn1 = (Button)findViewById(R.id.main_button1);
+		Button bn2 = (Button)findViewById(R.id.main_button2);
+	    tx = (TextView)findViewById(R.id.main_textView);
+		
+		startActivityButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+				Intent intent = new Intent();
+				//intent.setAction(Intent.ACTION_MAIN);
+				//intent.addCategory(Intent.CATEGORY_HOME);
+				String uriString = "http://www.baidu.com";
+				intent.setAction(Intent.ACTION_VIEW);
+				intent.setData(Uri.parse(uriString));
+				startActivity(intent);
+			}
+		});
+		
+		finishButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setType("xyz/abc");
+				intent.setData(Uri.parse("lee://www.fack.ory:8888/test"));
+				tx.setText(intent.toString());
+			}
+		});
+		
+		bn1.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setData(Uri.parse("lee://www.fack.ory:8888/test"));
+				intent.setType("xyz/abc");
+				tx.setText(intent.toString());
+			}
+		});
+		
+		bn2.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setDataAndType(Uri.parse("lee://www.fack.ory:8888/test"),"xyz/abc");
+				tx.setText(intent.toString());
+			}
+		});
+	}
+	
+*/		
+/*	
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.linearlayout_main);
+		Log.d(TAG, "onCreate 运行...");
+		
+		Button startActivityButton = (Button)findViewById(R.id.main_startnewactivity);
+		Button finishButton = (Button)findViewById(R.id.main_finish);
+		
+		startActivityButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(MainActivity.this,SecondActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		finishButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				MainActivity.this.finish();
+			}
+		});
+		
+	}
+	
+	@Override
+	public void onStart(){
+		super.onStart();
+		
+		Log.d(TAG, "onStart 运行...");
+	}
+	
+	@Override
+	public void onRestart(){
+		super.onRestart();
+		
+		Log.d(TAG, "onRestart 运行...");
+	}
+
+	@Override
+	public void onResume(){
+		super.onResume();
+		
+		Log.d(TAG, "onResume 运行...");
+	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+		
+		Log.d(TAG, "onPause 运行...");
+	}
+	
+	@Override
+	public void onStop(){
+		super.onStop();
+		Log.d(TAG, "onStop 运行...");
+	}
+
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		Log.d(TAG, "onDestroy 运行...");
+	}
+*/	
+/*	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.tablelayout_editview);
+		
+		Button button = (Button)findViewById(R.id.logbutton1);
+		button.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				EditText nameEditText = (EditText)findViewById(R.id.editvieweditText1);
+				EditText ageEditText = (EditText)findViewById(R.id.editvieweditText3);
+				
+				Person person = new Person(nameEditText.getText().toString(), ageEditText.getText().toString());
+				
+				Bundle bundle = new Bundle();
+				bundle.putSerializable("person", (Serializable)person);
+				
+				Intent intent = new Intent(MainActivity.this,SecondActivity.class);
+				//intent.putExtras(bundle);
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
+		});
+	}
+	
+*/
+	
+	
+/*	
+ * 
+ *  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!光子支付测试代码
+ 
+	public static PosdService posdService = null;
+    public static LightPayFuncs lightPayFuncs = null;
+	public TextView editText =null;
+	public String string  = new String();
+    
+	Handler handler = new Handler(){
+		@Override
+		public void handleMessage(Message msg){
+			if(msg.what == 0x123){
+				editText.setText(string);
+			}
+		}
+	};
+	
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.linearlayout_config);
+		Button button = (Button)findViewById(R.id.bn1);
+		Button buttoncancel = (Button)findViewById(R.id.bn2);
+		 editText = (TextView)findViewById(R.id.tx);
+		 
+		
+
+		bindPosdService();
+				
+		button.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					editText.setText("");
+					lightPayFuncs.start(new LightPayCallBack(), 60*1000);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				
+			}
+		});
+		
+		buttoncancel.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					editText.setText("");
+					lightPayFuncs.cancel();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+		});
+	}	
+	
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig){
+		super.onConfigurationChanged(newConfig);
+		String screenString = newConfig.orientation==Configuration.ORIENTATION_LANDSCAPE?"横向屏幕":"竖向屏幕";
+		Toast.makeText(this, "系统的屏幕方向发送改变"+"\n修改后的屏幕方向为:"+screenString,Toast.LENGTH_LONG).show();
+	}
+
+
+
+
+	
+	private void bindPosdService() {
+		Intent intent = new Intent();
+		intent.setAction( "com.seuic.android.PosdService" );
+		intent.setPackage("com.seuic.android");
+		intent.putExtra( "CheckFirmwareUpdate", true );
+		Log.d("Posd","posdConnection001");
+		bindService( intent, posdConnection , BIND_AUTO_CREATE );
+	}
+	
+	
+    private ServiceConnection posdConnection = new ServiceConnection() {
+			
+			@Override
+			public void onServiceConnected(ComponentName name, IBinder service) {
+				Log.d("Posd","posdConnection");
+				posdService = PosdService.Stub.asInterface( service );
+				if ( null != posdService ) {
+					try {
+					
+						lightPayFuncs = LightPayFuncs.Stub.asInterface(posdService.getExtraFuncs("LightPay"));
+						
+						//mHandler.sendEmptyMessage( MSG_START_CHECK_UPDATE );
+					} catch (RemoteException e) {
+						
+					}			
+				} else {
+					
+				}
+			}
+		
+			@Override
+			public void onServiceDisconnected(ComponentName name) {
+				Log.d("Posd","posdConnection002");
+				posdService = null;
+		
+			    lightPayFuncs = null;
+			}
+		
+		};
+				
+	
+	private class LightPayCallBack extends LightPayListener.Stub{
+
+		@Override
+		public int OnSuccess(byte[] lightdata, int lightdatalen,
+				byte[] hardwareID) throws RemoteException {
+			// TODO Auto-generated method stub
+			StringBuffer strbuf = new StringBuffer();
+			strbuf.append( "lightdatalen: " + lightdatalen
+					+ "\nlightdata:" + HexUtil.byteToHexString( lightdata,lightdatalen,true) 
+					+ "\nhardwareID: " + HexUtil.byteToHexString( hardwareID ));
+			string = strbuf.toString();
+			handler.sendEmptyMessage(0x123);
+			return 0;
+		}
+
+		@Override
+		public int OnFail(int returncode) throws RemoteException {
+			// TODO Auto-generated method stub
+			StringBuffer strbuf = new StringBuffer();
+			strbuf.append("失败").append(returncode);
+			string = strbuf.toString();
+			handler.sendEmptyMessage(0x123);
+			return 0;
+		}
+	
+	}
+*/
+	
+	/*	
+	private int speed = 10;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);		
+
+		
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		
+		final PlaneView planeView = new PlaneView(this);
+		setContentView(planeView);
+		//planeView.setBackgroundResource(Color.BLACK);
+		
+		WindowManager windowManager = getWindowManager();
+		Display display = windowManager.getDefaultDisplay();
+		DisplayMetrics metrics = new DisplayMetrics();
+		
+		display.getMetrics(metrics);
+		
+		planeView.setCurrentX(metrics.widthPixels/2);
+		planeView.setCurrentY(metrics.heightPixels-80);
+		
+		planeView.setOnKeyListener(new View.OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				// TODO Auto-generated method stub
+				float x,y;
+				x = planeView.getCurrentX();
+				y = planeView.getCurrentY();
+				
+				switch(event.getKeyCode()){
+				case KeyEvent.KEYCODE_4:
+					planeView.setCurrentX(x-speed);
+					break;
+				case KeyEvent.KEYCODE_6:
+					planeView.setCurrentX(x+speed);
+					break;
+				case KeyEvent.KEYCODE_8:
+					planeView.setCurrentY(y+speed);
+					break;
+				case KeyEvent.KEYCODE_2:
+					planeView.setCurrentY(y-speed);
+					break;	
+				default:
+					break;
+				}
+				planeView.invalidate();
+				return true;
+			}
+		});
+		
+		
+		planeView.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				planeView.setCurrentX(event.getX()-80);
+				planeView.setCurrentY(event.getY()+80);
+				planeView.invalidate();
+				return true;
+			}
+		});
+	}
+*/	
+
+/*	
+	private static final String SELECTED_ITEM = null;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.linearlayout_fragment);
+		
+		final ActionBar actionBar = getActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.addTab(actionBar.newTab().setText("第一页").setTabListener((TabListener) this));
+		actionBar.addTab(actionBar.newTab().setText("第二页").setTabListener((TabListener) this));
+		actionBar.addTab(actionBar.newTab().setText("第三页").setTabListener((TabListener) this));
+	}
+
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState){
+		if(savedInstanceState.containsKey(SELECTED_ITEM)){
+			getActionBar().setSelectedNavigationItem(savedInstanceState.getInt(SELECTED_ITEM));
+		}
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState){
+		outState.putInt(SELECTED_ITEM, getActionBar().getSelectedNavigationIndex());
+	}
+	
+	@Override
+	public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void onTabSelected(Tab tab, FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+		Fragment fragment = new Fragment();
+		
+		Bundle args = new Bundle();
+		args.putInt(, value)
+	}
+
+	@Override
+	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+*/
+/*	
+	
+	final int MENU1 = 0x111;
+	final int MENU2 = 0x112;
+	final int MENU3 = 0x113;
+	
+	TextView textView = null;
+	PopupMenu popupMenu  = null;
+	Button button = null;
+
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.linearlayout_menu);
+		button = (Button)findViewById(R.id.popupmenubotton);
+		textView = (TextView)findViewById(R.id.menuview);
+		/*
+		button.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				textView.setText("按键按下");
+			}
+		});
+		
+		button.setOnLongClickListener(new View.OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+				// TODO Auto-generated method stub
+			//	onPopupButtonClick(v);
+				return true;
+			}
+		});
+		
+	}
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu){
+		MenuInflater inflater = new MenuInflater(this);
+		inflater.inflate(R.menu.actionview, menu);
+		
+		return super.onCreateOptionsMenu(menu);
+	}
+*/
+/*	
+	public void displayActionBar(View v){
+		
+	}
+	
+	public void hideActionBar(View v){
+		
+	}
+*/	
+/*	
+	public void onPopupButtonClick(View button){
+		popupMenu = new PopupMenu(this,button);
+		getMenuInflater().inflate(R.menu.popup_menu,popupMenu.getMenu());
+		popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				// TODO Auto-generated method stub
+				switch(item.getItemId()){
+				case R.id.find:
+					textView.setText("查找文字");
+					break;
+				case R.id.add:
+					textView.setText("添加文字");
+					break;
+				case R.id.edit:
+					textView.setText("请输入文字");
+					break;
+				case R.id.hide:
+					popupMenu.dismiss();
+					textView.setText("");
+				default:
+					break;
+				}
+				return false;
+			}
+		});
+		popupMenu.show();
+	}
+*/	
+/*	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu,View source,ContextMenu.ContextMenuInfo memContextMenuInfo){
+		menu.add(0, MENU1, 0, "红色");
+		menu.add(0, MENU2, 0, "绿色");
+		menu.add(0, MENU3, 0, "蓝色");
+		
+		menu.setGroupCheckable(0, true, true);
+		menu.setHeaderIcon(R.drawable.b23_small);
+		menu.setHeaderTitle("选择背景色");
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem menuItem){
+	
+		switch(menuItem.getItemId()){
+		case MENU1:
+			menuItem.setCheckable(false);
+			textView.setBackgroundColor(Color.RED);
+			break;
+		case MENU2:
+			menuItem.setCheckable(false);
+			textView.setBackgroundColor(Color.GREEN);
+			break;
+		case MENU3:
+			menuItem.setCheckable(true);
+			textView.setBackgroundColor(Color.BLUE);			
+			break;
+		default:
+			break;
+		}
+		
+		return true;
+	}
+*/	
+	
+/*	
+	//定义"字体大小"菜单项的标识
+	final int FONT_10 = 0x111;
+	final int FONT_12 = 0x112;
+	final int FONT_14 = 0x113;
+	final int FONT_16 = 0x114;
+	final int FONT_18 = 0x115;
+	
+	//定义普通菜单 ID
+	final int PLAIN_ITEM = 0x11b;
+	
+	//定义 字体颜色 菜单表示
+	final int FONT_RED = 0x116;
+	final int FONT_BLUE = 0x117;
+	final int FONT_GREEN = 0x118;
+	
+	private  TextView textView = null;
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.linearlayout_menu);
+		
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		SubMenu fontmenu = menu.addSubMenu("字体大小");
+		fontmenu.setIcon(R.drawable.b23_small);
+		fontmenu.setHeaderIcon(R.drawable.b23_small);
+		fontmenu.setHeaderTitle("选择字体大小");
+		fontmenu.add(0, FONT_10, 0, "10号字体");
+		fontmenu.add(0, FONT_12, 0, "12号字体");
+		fontmenu.add(0, FONT_14, 0, "14号字体");
+		fontmenu.add(0, FONT_16, 0, "16号字体");
+		fontmenu.add(0, FONT_18, 0, "18号字体");
+		
+		menu.add(0, PLAIN_ITEM, 0, "字体形状");
+		
+		SubMenu colormenu = menu.addSubMenu("字体颜色");
+		colormenu.setIcon(R.drawable.b23_small);
+		colormenu.setHeaderIcon(R.drawable.b23_small);
+		colormenu.setHeaderTitle("选择字体颜色");
+		colormenu.add(0, FONT_RED, 0, "红色");
+		colormenu.add(0, FONT_BLUE, 0, "蓝色");
+		//MenuItem menuItem = colormenu.add(0, FONT_GREEN, 0, "绿色");
+		MenuItem menuItem = colormenu.add("绿色");
+		menuItem.setIntent(new Intent(this, OtherActivity.class));
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem menuItem){
+		textView = (TextView)findViewById(R.id.menuview);
+		switch(menuItem.getItemId()){
+		case FONT_10:
+			textView.setTextSize(10*2);
+			break;
+		case FONT_12:
+			textView.setTextSize(12*2);
+			break;
+		case FONT_14:
+			textView.setTextSize(14*2);
+			break;
+		case FONT_16:
+			textView.setTextSize(16*2);
+			break;
+		case FONT_18:
+			textView.setTextSize(18*2);
+			break;
+		case FONT_RED:
+			textView.setTextColor(Color.RED);
+			break;
+		case FONT_BLUE:
+			textView.setTextColor(Color.BLUE);
+			break;
+		case FONT_GREEN:
+			textView.setTextColor(Color.GREEN);
+			break;
+		case PLAIN_ITEM:
+			//Toast.makeText(MainActivity.this, "暂不支持此功能", Toast.LENGTH_SHORT).show();
+			break;
+		default:
+			break;
+		}
+		
+		return true;
+	}
+*/	
+/*	
+	private final static int MAXPROCESS = 100;
+	private  int[] date = new int[100];
+	private  int processstatus  = 0;
+	private  int hasdate=0;
+	
+	private static ProgressDialog progressDialog1 = null;
+	
+	Handler handler = new Handler(){
+		@Override
+		public void handleMessage(Message msg){
+			if(msg.what == 0x123){
+				progressDialog1.setProgress(processstatus);
+			}
+		}
+	};
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.linearlayout_processdialog);
+	}
+	
+	public void showSpinner(View source){
+		ProgressDialog.show(MainActivity.this, "任务1执行中", "任务执行中...请等待", true,true);
+	}
+	
+	public void showIndeterminate(View source){
+		ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+		progressDialog.setTitle("任务2执行中");
+		progressDialog.setMessage("任务执行中...请稍候");
+		progressDialog.setCancelable(true);
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		progressDialog.setIndeterminate(true);
+		progressDialog.show();
+	}
+	
+	public void showProcess(View source){
+		processstatus = 0;
+		hasdate = 0;
+		progressDialog1 = new ProgressDialog(MainActivity.this);
+		progressDialog1.setMax(MAXPROCESS);
+		progressDialog1.setTitle("任务3执行中");
+		progressDialog1.setMessage("任务执行中...");
+		progressDialog1.setCancelable(false);
+		progressDialog1.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		progressDialog1.setIndeterminate(false);
+		progressDialog1.show();
+		
+		new Thread(){
+			@Override
+			public void run(){
+				while(processstatus < MAXPROCESS){
+					processstatus = MAXPROCESS*doWork()/date.length;
+					handler.sendEmptyMessage(0x123);
+				}
+					
+				if(processstatus >= MAXPROCESS){
+					progressDialog1.dismiss();
+				}
+			}
+		}.start();
+	}
+	
+	public int doWork(){
+		date[hasdate++] = 1;
+		try {
+			Thread.sleep(100);	
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return hasdate;
+	}
+*/	
+/*	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.linearlayout_datepickerdialog);
+		
+		Button dateButton = (Button)findViewById(R.id.datebn);
+		Button timeButton = (Button)findViewById(R.id.timebn);
+		
+		dateButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Calendar calendar = Calendar.getInstance();
+				DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this, 
+					new DatePickerDialog.OnDateSetListener() {
+						
+						@Override
+						public void onDateSet(DatePicker view, int year, int monthOfYear,
+								int dayOfMonth) {
+							// TODO Auto-generated method stub
+							TextView textView = (TextView)findViewById(R.id.textView1) ;
+							textView.setText("选择的时间:"+year+"年"+(monthOfYear+1)+"月"+dayOfMonth+"日");
+						}
+					},
+						calendar.get(Calendar.YEAR), 
+						calendar.get(Calendar.MONTH),
+						calendar.get(Calendar.DAY_OF_MONTH));
+				
+				datePickerDialog.show();
+				datePickerDialog.setCancelable(false);
+			}
+		});
+		
+		timeButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Calendar calendar = Calendar.getInstance();
+				TimePickerDialog timePickerDialog = new TimePickerDialog(MainActivity.this,
+						new TimePickerDialog.OnTimeSetListener() {
+							
+							@Override
+							public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+								// TODO Auto-generated method stub
+								TextView textView = (TextView)findViewById(R.id.textView1) ;
+								textView.setText("选择的时间:"+hourOfDay+"时"+minute+"分");
+							}
+						}, calendar.get(Calendar.HOUR), Calendar.MINUTE, false);
+				timePickerDialog.show();
+				timePickerDialog.setCancelable(false);
+				
+			}
+		});
+	}
+*/	
+/*	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.linearlayout_popupview);
+	
+		View  root = this.getLayoutInflater().inflate(R.layout.linearlayout_popupimage, null);
+		final PopupWindow popupWindow = new PopupWindow(root,400,600);
+		
+		Button button = (Button)findViewById(R.id.popupbutton1);
+		button.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				popupWindow.showAsDropDown(v);
+				popupWindow.showAtLocation(findViewById(R.id.popupbutton1), Gravity.CENTER, 20, 20);
+			}
+		});
+		
+		root.findViewById(R.id.popupbutton1).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				popupWindow.dismiss();
+			}
+		});
+	}
+*/	
+/*	
+	private static boolean dialogctr = false;
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.linearlayout_alertdialog);
+		dialogctr = false;
+	}
+	
+	//-------------------------------------------------显示内容
+	private void showText(int type,String str){
+		  TextView textView = (TextView)findViewById(R.id.dialogView1);
+		  StringBuffer stringBuffer = new StringBuffer();
+		  
+		  switch(type){
+		  case 1:
+			  stringBuffer.append("简单对话框-");
+			  break;
+		  case 2:
+			  stringBuffer.append("简单列表项对话框-");
+			  break;
+		  case 3:
+			  stringBuffer.append("单选列表项对话框-");
+			  break;
+		  case 4:
+			  stringBuffer.append("多选列表项对话框-");
+			  break;
+		  case 5:
+			  stringBuffer.append("自定义列表项-");
+			  break;
+		  case 6:
+			  stringBuffer.append("自定义View-");
+			  break;
+		  case 7:
+			  break;
+		  case 8:
+			  stringBuffer.append(textView.getText());
+			  break;
+		  default:
+			  break;
+		  }
+		  
+		  stringBuffer.append(str);
+		  textView.setText(stringBuffer.toString());
+	}
+	
+	//------------------------------------------------按钮设置
+	private void setPositiveButton(AlertDialog.Builder builder){
+		builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				showText(1,"【确定键】");
+				dialogctr = false;
+			}
+		});
+	}
+	
+	private void setNegativeButton(AlertDialog.Builder builder){
+		builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				showText(1,"【取消键】");
+				dialogctr = false;
+			}
+		});
+	}
+	
+	private void setNeutralButton(AlertDialog.Builder builder){
+		builder.setNegativeButton("中立", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				showText(1,"【中立键】");
+				dialogctr = false;
+			}
+		});
+	}
+	//---------------------------------------------------简单对话框代码
+	public void simpleDialog(View source){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("简单对话框标题");
+		builder.setIcon(R.drawable.b23_small);
+		builder.setMessage("简单对话框内容第一行\n内容第二行");
+		setPositiveButton(builder);
+		setNegativeButton(builder);
+		builder.create();
+		builder.show();
+		
+	}
+	
+	public void dialogbn1(View source){
+		simpleDialog(source);
+	}
+	
+	//-------------------------------------------------简单列表项对话框
+	final private String[] items = new String[]{
+			"苏州市民卡",
+			"苏州独墅湖卡",
+			"苏州文体卡",
+			"交通联合卡片",
+	};
+	final private boolean[] choice = new boolean[]{
+			false,false,false,false,
+	};
+	
+	public void simpleListDialog(View source){		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("简单列表对话框标题");
+		builder.setIcon(R.drawable.b23_small);
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				showText(2,"选择对象:"+items[which]);
+			}
+		});
+		//setPositiveButton(builder);
+		setNegativeButton(builder);
+		//setNeutralButton(builder);
+		builder.create();
+		builder.show().setCancelable(false);
+		
+	}
+	
+	public void dialogbn2(View source){
+		simpleListDialog(source);
+	}
+	
+	//-------------------------------------------------单项选择对话框
+	public void singleChioceDialog(View source){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("单项列表对话框").setIcon(R.drawable.b23_small)
+			   .setSingleChoiceItems(items, 100, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					showText(7,"选择对象:"+items[which]);
+				}
+			});
+		setNegativeButton(builder);
+		setPositiveButton(builder);
+		builder.create().show();
+	}
+	
+	public void dialogbn3(View source){
+		singleChioceDialog(source);
+	}
+	
+	//-------------------------------------------------多项选择对话框	
+	public void multChioceDialog(View source){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("多项列表对话框").setIcon(R.drawable.b23_small)
+		       .setMultiChoiceItems(items, choice, new DialogInterface.OnMultiChoiceClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+					// TODO Auto-generated method stub
+					showText(8,"选择对象:"+which + "是否选择:"+isChecked);
+				}
+			});
+		setNegativeButton(builder);
+		setPositiveButton(builder);
+		builder.create().show();
+	}
+	
+	public void dialogbn4(View source){
+		multChioceDialog(source);
+	}
+	
+	//------------------------------------------------自定义列表项对话框
+	public void customListDialog(View source){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("自定义列表项对话框").setIcon(R.drawable.b23_small)
+		       .setAdapter(new ArrayAdapter<String>(this, R.layout.item_array, items), null);
+		setNegativeButton(builder);
+		setPositiveButton(builder);
+		builder.create().show();
+	}
+	
+	public void dialogbn5(View source){
+		customListDialog(source);
+	}
+	
+	//---------------------------------------------自定义View
+	public void customView(View source){
+		TableLayout tableLayout = (TableLayout)getLayoutInflater().inflate(R.layout.tablelayout_log, null);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("自定义View框图").setIcon(R.drawable.b23_small)
+		       .setView(tableLayout);
+		setNegativeButton(builder);
+		setPositiveButton(builder);
+		builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+			
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				// TODO Auto-generated method stub
+				dialogctr = false;
+			}
+		});
+		builder.create();
+		builder.show().setCanceledOnTouchOutside(false);
+	}
+	
+	public void dialogbn6(View source){
+		if(!dialogctr)
+		{	
+			dialogctr = true;
+			customView(source);
+		}	
+	}
+*/	
+/*	
 	final int NOTIFICATION_ID = 0x123;
 	NotificationManager notificationManager = null;
 	@Override
@@ -100,10 +1939,10 @@ public class MainActivity extends Activity {
 		
 		Notification notification = new Notification.Builder(this)
 			.setAutoCancel(true)
-			.setTicker("有新消息-提示文本")
+			.setTicker("QQ消息-小玉发来消息")
 			.setSmallIcon(R.drawable.image1)
 			.setContentTitle("通知内容标题")
-			.setContentText("这是Notification的实际内容")
+			.setContentText("这是Notification的实际内容--还钱 还钱AAAAAAAAAA")
 			.setDefaults(Notification.DEFAULT_ALL)
 			.setWhen(System.currentTimeMillis())
 			.setContentIntent(pendingIntent)
@@ -116,6 +1955,7 @@ public class MainActivity extends Activity {
 	public void cancel(View source){
 		notificationManager.cancel(NOTIFICATION_ID);
 	}
+*/	
 /*	
 	/* MainActivity 需要继承  TabActivity *//*
 	public void onCreate(Bundle savedInstanceState){
@@ -872,7 +2712,7 @@ public class MainActivity extends Activity {
 		ListView listView = (ListView)findViewById(R.id.listid);
 		listView.setAdapter(simpleAdapter);
 	}
-*/	
+*/
 /*	
 	final String[] arrayStrings = new String[]{
 			"周星驰",
@@ -1216,11 +3056,13 @@ public class MainActivity extends Activity {
 		}, 0, 300);
 	}
 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
 
+/*
+		@Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+			getMenuInflater().inflate(R.menu.main, menu);
+			return true;
+		}
+*/
 }

@@ -12,20 +12,78 @@
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
     <!-- 添加振动器的权限 -->
     <uses-permission android:name="android.permission.VIBRATE"/>
+    
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        
+
+        
         <activity
             android:name="com.example.androidtest.MainActivity"
-            android:label="@string/app_name" >
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        
+        <activity
+            android:name="com.example.androidtest.SecondActivity"
+            android:label="@string/app_second"
+            android:screenOrientation="portrait">
+            <intent-filter >
+                <action android:name="com.example.androidtest.action.CRAZYIT_ACTION"/>
+                <action android:name="hello"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="com.example.androidtest.action.CRAZYIT_CATEGORY"/>
+            </intent-filter>
+		</activity>
+		
+        <provider 
+            android:name = ".FirstProvider"
+            android:authorities="com.example.androidtest.firstprovider"
+            android:exported="true"/>
+        
+       	<service 
+	        android:name="com.example.androidtest.BindService">
+	        <intent-filter>
+ 				<action android:name="com.example.androidtest.BindService" />
+			</intent-filter>
+	    </service>
+        
+       	
+       	<receiver 
+       	    android:name=".MyReceiver">
+       	    <intent-filter android:priority="20">
+ 				<action android:name="com.example.androidtest.MyReceiver" />
+			</intent-filter>
+       	</receiver>
+       	
+      	<receiver 
+      	    android:name=".MyReceiver2">
+      	    <intent-filter android:priority="1">
+				<action android:name="com.example.androidtest.MyReceiver" />
+			</intent-filter>
+       	</receiver>
+       	
+      	 <receiver 
+      	    android:name="com.example.androidtest.LaunchReceiver">
+      	    <intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+			</intent-filter>
+       	</receiver>
+      	
     </application>
 
 </manifest>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+	<item 
+	    android:title="@string/fontsize"
+	    android:showAsAction="always|withText"
+	    android:icon="@drawable/b23_small">
+	    <menu>
+	        <group 
+	            android:checkableBehavior="single">
+	            <item
+	                android:id="@+id/font_10"
+	                android:title="10号字体"/>
+	            <item
+	                android:id="@+id/font_12"
+	                android:title="12号字体"/>    
+	        </group>
+	    </menu>
+	</item>    
+
+	<item 
+	    android:title="@string/fontcolor"
+	    android:showAsAction="always"
+	    android:icon="@drawable/b23_small">
+	    <menu>
+	        <group 
+	            android:checkableBehavior="single">
+	            <item
+	                android:id="@+id/font_10"
+	                android:title="10号字体"/>
+	            <item
+	                android:id="@+id/font_12"
+	                android:title="12号字体"/>    
+	        </group>
+	    </menu>
+	</item>    
+</menu>
