@@ -12,7 +12,13 @@ public class SecondActivity extends Activity{
 
 	int i;
 	int j;
-
+	int k;
+	
+	public int count(int i,int j){
+		k = i+j;
+		printf("1ee12e12e1e121e");
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -22,7 +28,7 @@ public class SecondActivity extends Activity{
 		Button close = (Button)findViewById(R.id.second_button2);
 		//TextView textView = (TextView)findViewById(R.id.secondtextView);
 		//ComponentName componentName = getIntent().getComponent();
-		//textView.setText("包名:"+componentName.getPackageName()+"\n类名:"+componentName.getClassName());
+		//textView.setText("掳眉脙没:"+componentName.getPackageName()+"\n脌脿脙没:"+componentName.getClassName());
 		
 		
 		previous.setOnClickListener(new View.OnClickListener() {
@@ -63,8 +69,8 @@ public class SecondActivity extends Activity{
 		Intent intent = getIntent();
 		Person person = (Person)intent.getSerializableExtra("person");
 		StringBuffer stringBuffer = new StringBuffer();
-		stringBuffer.append("姓名:").append(person.getName()).append("\n");
-		stringBuffer.append("年龄:").append(person.getAge()).append("\n");
+		stringBuffer.append("脨脮脙没:").append(person.getName()).append("\n");
+		stringBuffer.append("脛锚脕盲:").append(person.getAge()).append("\n");
 		textView.setText(stringBuffer.toString());
 		
 		previous.setOnClickListener(new View.OnClickListener() {
