@@ -12,7 +12,7 @@ public class SecondActivity extends Activity{
 
 	int i;
 	int j;
-	int k;
+	int k1;
 	
 	public int count(int i,int j){
 		k = i+j;
