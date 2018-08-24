@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 public class SecondActivity extends Activity{
 
+	int i;
+	int j;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
