@@ -19,4 +19,5 @@ public class MyReceiver extends BroadcastReceiver{
 		abortBroadcast();
 	}
 
+	int j;
 }
