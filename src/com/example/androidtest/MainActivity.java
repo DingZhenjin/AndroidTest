@@ -166,7 +166,7 @@ public class MainActivity extends Activity{
 	Button bnButton = null;
 	int imagecount = 0;
 	
-	int k;
+	int k;//test dingzj 20180826
 	
 	
 	@Override
@@ -313,7 +313,7 @@ public class MainActivity extends Activity{
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
 				intent.setAction("com.example.androidtest.MyReceiver");
-				intent.putExtra("msg", "Ò»¸ö¼òµ¥µÄĞÅÏ¢½»»¥");
+				intent.putExtra("msg", "ä¸€ä¸ªç®€å•çš„ä¿¡æ¯äº¤äº’");
 				sendOrderedBroadcast(intent, null);
 			}
 		});
@@ -383,13 +383,13 @@ public class MainActivity extends Activity{
 		
 		statusvalueArrayList.add(string);
 		statusvalueArrayList.add(tmanagerManager.getDeviceSoftwareVersion() !=null?
-				tmanagerManager.getDeviceSoftwareVersion():"Î´Öª");
+				tmanagerManager.getDeviceSoftwareVersion():"æœªçŸ¥");
 		
 		statusvalueArrayList.add(tmanagerManager.getNetworkOperator());
 		statusvalueArrayList.add(tmanagerManager.getNetworkOperatorName());
 		statusvalueArrayList.add(phoneType[tmanagerManager.getPhoneType()]);
 		statusvalueArrayList.add(tmanagerManager.getCellLocation()!=null?
-				tmanagerManager.getCellLocation().toString():"Î´Öª");
+				tmanagerManager.getCellLocation().toString():"æœªçŸ¥");
 		statusvalueArrayList.add(tmanagerManager.getSimCountryIso());
 		statusvalueArrayList.add(tmanagerManager.getSimSerialNumber());
 		statusvalueArrayList.add(simstateStrings[tmanagerManager.getSimState()]);
@@ -423,14 +423,14 @@ public class MainActivity extends Activity{
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
 			// TODO Auto-generated method stub
-			Toast.makeText(MainActivity.this, "Æô¶¯Service DisConnect", Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.this, "å¯åŠ¨Service DisConnect", Toast.LENGTH_SHORT).show();
 		}
 		
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			// TODO Auto-generated method stub
 			binder =(BindService.MyBinder)service;
-			Toast.makeText(MainActivity.this, "Æô¶¯Service Connect", Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.this, "å¯åŠ¨Service Connect", Toast.LENGTH_SHORT).show();
 		}
 	};
 	
@@ -448,7 +448,7 @@ public class MainActivity extends Activity{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				bindService(intent, connection, BIND_AUTO_CREATE);
-				Toast.makeText(MainActivity.this, "°ó¶¨Service Connect", Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, "ç»‘å®šService Connect", Toast.LENGTH_SHORT).show();
 			}
 		});
 		
@@ -458,7 +458,7 @@ public class MainActivity extends Activity{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				unbindService(connection);
-				Toast.makeText(MainActivity.this, "½â³ıService Connect", Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, "è§£é™¤Service Connect", Toast.LENGTH_SHORT).show();
 			}
 		});
 		
@@ -475,7 +475,7 @@ public class MainActivity extends Activity{
 	}
 	
 */	
-/* startService Ö»ÊÇÆô¶¯Ò»¸öServer£¬´ËÓ¦ÓÃºÍµ÷ÓÃµÄServiceÃ»ÓĞÁªÏµ */	
+/* startService åªæ˜¯å¯åŠ¨ä¸€ä¸ªServerï¼Œæ­¤åº”ç”¨å’Œè°ƒç”¨çš„Serviceæ²¡æœ‰è”ç³» */	
 /*
 	Button startServiceButton = null;
 	Button stopServiceButton = null;
@@ -529,7 +529,7 @@ public class MainActivity extends Activity{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Cursor cursor = contentResolver.query(uri, null, "query_where", null, null);
-				Toast.makeText(MainActivity.this, "Ô¶³ÌContentProvider·µ»ØµÄCursorÎª£º "+cursor, Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, "è¿œç¨‹ContentProviderè¿”å›çš„Cursorä¸ºï¼š "+cursor, Toast.LENGTH_SHORT).show();
 			}
 		});
 		
@@ -543,7 +543,7 @@ public class MainActivity extends Activity{
 				contentValues.put("studentname", "dingzhnjin");
 				Uri newUri =  contentResolver.insert(uri, contentValues);
 			
-				Toast.makeText(MainActivity.this, "Ô¶³ÌContentProvider·µ»ØµÄnewUriÎª£º "+newUri, Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, "è¿œç¨‹ContentProviderè¿”å›çš„newUriä¸ºï¼š "+newUri, Toast.LENGTH_SHORT).show();
 			}
 		});
 		
@@ -556,7 +556,7 @@ public class MainActivity extends Activity{
 				ContentValues contentValues = new ContentValues();
 				contentValues.put("studentname", "wqdwqd");
 				int count = contentResolver.update(uri, contentValues, "update_where", null);
-				Toast.makeText(MainActivity.this, "Ô¶³ÌContentProvider·µ»ØµÄnewUriÎª£º "+count, Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, "è¿œç¨‹ContentProviderè¿”å›çš„newUriä¸ºï¼š "+count, Toast.LENGTH_SHORT).show();
 			}
 		});
 		
@@ -567,7 +567,7 @@ public class MainActivity extends Activity{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				int count = contentResolver.delete(uri, "update_where", null);
-				Toast.makeText(MainActivity.this, "Ô¶³ÌContentProvider·µ»ØµÄnewUriÎª£º "+count, Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, "è¿œç¨‹ContentProviderè¿”å›çš„newUriä¸ºï¼š "+count, Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
@@ -596,7 +596,7 @@ public class MainActivity extends Activity{
 					int result = tts.setLanguage(Locale.US);
 					if(result != TextToSpeech.LANG_COUNTRY_AVAILABLE &&
 						result != TextToSpeech.LANG_AVAILABLE){
-						Toast.makeText(MainActivity.this, "Ôİ²»Ö§³Ö", Toast.LENGTH_SHORT).show();
+						Toast.makeText(MainActivity.this, "æš‚ä¸æ”¯æŒ", Toast.LENGTH_SHORT).show();
 					}
 				}
 			}
@@ -698,7 +698,7 @@ public class MainActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.linearlayout_database);
-		Log.d(TAG, "onCreate ÔËĞĞ...");
+		Log.d(TAG, "onCreate è¿è¡Œ...");
 	
 		dbDatabase = SQLiteDatabase.openOrCreateDatabase(this.getFilesDir().toString()+"/my.db3", null);
 		
@@ -760,7 +760,7 @@ public class MainActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.linearlayout_file);
-		Log.d(TAG, "onCreate ÔËĞĞ...");
+		Log.d(TAG, "onCreate è¿è¡Œ...");
 
 		Button readButton = (Button)findViewById(R.id.file_readbn);
 		Button writeButton = (Button)findViewById(R.id.file_writebn);
@@ -833,7 +833,7 @@ public class MainActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.linerarlayout_sharepreferences);
-		Log.d(TAG, "onCreate ÔËĞĞ...");
+		Log.d(TAG, "onCreate è¿è¡Œ...");
 		
 		preferences = getSharedPreferences("fileedit", MODE_PRIVATE);
 		editor = preferences.edit();
@@ -847,7 +847,7 @@ public class MainActivity extends Activity{
 		int startcount = preferences.getInt("startcount", 0);
 		editor.putInt("startcount", ++startcount);
 		editor.commit();
-		tx.setText("Æô¶¯´ÎÊı: "+startcount);
+		tx.setText("å¯åŠ¨æ¬¡æ•°: "+startcount);
 		readButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -856,7 +856,7 @@ public class MainActivity extends Activity{
 				String timeString =  preferences.getString("time", null);
 				int randnum = preferences.getInt("randrom", 0);
 				
-				String resultString = timeString==null?"Êı¾İÎ´Ğ´ÈëÊı¾İ":"Ğ´ÈëÊ±¼ä: "+timeString+"\nËæ»úÊı: "+randnum;
+				String resultString = timeString==null?"æ•°æ®æœªå†™å…¥æ•°æ®":"å†™å…¥æ—¶é—´: "+timeString+"\néšæœºæ•°: "+randnum;
 				
 				Toast.makeText(MainActivity.this, resultString, Toast.LENGTH_LONG).show();
 				
@@ -869,7 +869,7 @@ public class MainActivity extends Activity{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				
-				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyÄê MMÔÂ ddÈÕ "+"hh:mm:ss");
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyå¹´ MMæœˆ ddæ—¥ "+"hh:mm:ss");
 				editor.putString("time", simpleDateFormat.format(new Date()));
 				editor.putInt("randrom", (int)(Math.random()*100));
 				editor.commit();
@@ -885,7 +885,7 @@ public class MainActivity extends Activity{
 				editor.clear();
 				editor.commit();
 				
-				Toast.makeText(MainActivity.this, "É¾³ıÍê³É", Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, "åˆ é™¤å®Œæˆ", Toast.LENGTH_SHORT).show();
 				
 			}
 		});
@@ -904,7 +904,7 @@ public class MainActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.linearlayout_main);
-		Log.d(TAG, "onCreate ÔËĞĞ...");
+		Log.d(TAG, "onCreate è¿è¡Œ...");
 		
 		Button startActivityButton = (Button)findViewById(R.id.main_startnewactivity);
 		Button finishButton = (Button)findViewById(R.id.main_finish);
@@ -971,7 +971,7 @@ public class MainActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.linearlayout_main);
-		Log.d(TAG, "onCreate ÔËĞĞ...");
+		Log.d(TAG, "onCreate è¿è¡Œ...");
 		
 		Button startActivityButton = (Button)findViewById(R.id.main_startnewactivity);
 		Button finishButton = (Button)findViewById(R.id.main_finish);
@@ -1001,41 +1001,41 @@ public class MainActivity extends Activity{
 	public void onStart(){
 		super.onStart();
 		
-		Log.d(TAG, "onStart ÔËĞĞ...");
+		Log.d(TAG, "onStart è¿è¡Œ...");
 	}
 	
 	@Override
 	public void onRestart(){
 		super.onRestart();
 		
-		Log.d(TAG, "onRestart ÔËĞĞ...");
+		Log.d(TAG, "onRestart è¿è¡Œ...");
 	}
 
 	@Override
 	public void onResume(){
 		super.onResume();
 		
-		Log.d(TAG, "onResume ÔËĞĞ...");
+		Log.d(TAG, "onResume è¿è¡Œ...");
 	}
 	
 	@Override
 	public void onPause(){
 		super.onPause();
 		
-		Log.d(TAG, "onPause ÔËĞĞ...");
+		Log.d(TAG, "onPause è¿è¡Œ...");
 	}
 	
 	@Override
 	public void onStop(){
 		super.onStop();
-		Log.d(TAG, "onStop ÔËĞĞ...");
+		Log.d(TAG, "onStop è¿è¡Œ...");
 	}
 
 	
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
-		Log.d(TAG, "onDestroy ÔËĞĞ...");
+		Log.d(TAG, "onDestroy è¿è¡Œ...");
 	}
 */	
 /*	
@@ -1071,7 +1071,7 @@ public class MainActivity extends Activity{
 	
 /*	
  * 
- *  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!¹â×ÓÖ§¸¶²âÊÔ´úÂë
+ *  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!å…‰å­æ”¯ä»˜æµ‹è¯•ä»£ç 
  
 	public static PosdService posdService = null;
     public static LightPayFuncs lightPayFuncs = null;
@@ -1134,8 +1134,8 @@ public class MainActivity extends Activity{
 	@Override
 	public void onConfigurationChanged(Configuration newConfig){
 		super.onConfigurationChanged(newConfig);
-		String screenString = newConfig.orientation==Configuration.ORIENTATION_LANDSCAPE?"ºáÏòÆÁÄ»":"ÊúÏòÆÁÄ»";
-		Toast.makeText(this, "ÏµÍ³µÄÆÁÄ»·½Ïò·¢ËÍ¸Ä±ä"+"\nĞŞ¸ÄºóµÄÆÁÄ»·½ÏòÎª:"+screenString,Toast.LENGTH_LONG).show();
+		String screenString = newConfig.orientation==Configuration.ORIENTATION_LANDSCAPE?"æ¨ªå‘å±å¹•":"ç«–å‘å±å¹•";
+		Toast.makeText(this, "ç³»ç»Ÿçš„å±å¹•æ–¹å‘å‘é€æ”¹å˜"+"\nä¿®æ”¹åçš„å±å¹•æ–¹å‘ä¸º:"+screenString,Toast.LENGTH_LONG).show();
 	}
 
 
@@ -1202,7 +1202,7 @@ public class MainActivity extends Activity{
 		public int OnFail(int returncode) throws RemoteException {
 			// TODO Auto-generated method stub
 			StringBuffer strbuf = new StringBuffer();
-			strbuf.append("Ê§°Ü").append(returncode);
+			strbuf.append("å¤±è´¥").append(returncode);
 			string = strbuf.toString();
 			handler.sendEmptyMessage(0x123);
 			return 0;
@@ -1290,9 +1290,9 @@ public class MainActivity extends Activity{
 		
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.addTab(actionBar.newTab().setText("µÚÒ»Ò³").setTabListener((TabListener) this));
-		actionBar.addTab(actionBar.newTab().setText("µÚ¶şÒ³").setTabListener((TabListener) this));
-		actionBar.addTab(actionBar.newTab().setText("µÚÈıÒ³").setTabListener((TabListener) this));
+		actionBar.addTab(actionBar.newTab().setText("ç¬¬ä¸€é¡µ").setTabListener((TabListener) this));
+		actionBar.addTab(actionBar.newTab().setText("ç¬¬äºŒé¡µ").setTabListener((TabListener) this));
+		actionBar.addTab(actionBar.newTab().setText("ç¬¬ä¸‰é¡µ").setTabListener((TabListener) this));
 	}
 
 	@Override
@@ -1351,7 +1351,7 @@ public class MainActivity extends Activity{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				textView.setText("°´¼ü°´ÏÂ");
+				textView.setText("æŒ‰é”®æŒ‰ä¸‹");
 			}
 		});
 		
@@ -1396,13 +1396,13 @@ public class MainActivity extends Activity{
 				// TODO Auto-generated method stub
 				switch(item.getItemId()){
 				case R.id.find:
-					textView.setText("²éÕÒÎÄ×Ö");
+					textView.setText("æŸ¥æ‰¾æ–‡å­—");
 					break;
 				case R.id.add:
-					textView.setText("Ìí¼ÓÎÄ×Ö");
+					textView.setText("æ·»åŠ æ–‡å­—");
 					break;
 				case R.id.edit:
-					textView.setText("ÇëÊäÈëÎÄ×Ö");
+					textView.setText("è¯·è¾“å…¥æ–‡å­—");
 					break;
 				case R.id.hide:
 					popupMenu.dismiss();
@@ -1419,13 +1419,13 @@ public class MainActivity extends Activity{
 /*	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu,View source,ContextMenu.ContextMenuInfo memContextMenuInfo){
-		menu.add(0, MENU1, 0, "ºìÉ«");
-		menu.add(0, MENU2, 0, "ÂÌÉ«");
-		menu.add(0, MENU3, 0, "À¶É«");
+		menu.add(0, MENU1, 0, "çº¢è‰²");
+		menu.add(0, MENU2, 0, "ç»¿è‰²");
+		menu.add(0, MENU3, 0, "è“è‰²");
 		
 		menu.setGroupCheckable(0, true, true);
 		menu.setHeaderIcon(R.drawable.b23_small);
-		menu.setHeaderTitle("Ñ¡Ôñ±³¾°É«");
+		menu.setHeaderTitle("é€‰æ‹©èƒŒæ™¯è‰²");
 	}
 	
 	@Override
@@ -1453,17 +1453,17 @@ public class MainActivity extends Activity{
 */	
 	
 /*	
-	//¶¨Òå"×ÖÌå´óĞ¡"²Ëµ¥ÏîµÄ±êÊ¶
+	//å®šä¹‰"å­—ä½“å¤§å°"èœå•é¡¹çš„æ ‡è¯†
 	final int FONT_10 = 0x111;
 	final int FONT_12 = 0x112;
 	final int FONT_14 = 0x113;
 	final int FONT_16 = 0x114;
 	final int FONT_18 = 0x115;
 	
-	//¶¨ÒåÆÕÍ¨²Ëµ¥ ID
+	//å®šä¹‰æ™®é€šèœå• ID
 	final int PLAIN_ITEM = 0x11b;
 	
-	//¶¨Òå ×ÖÌåÑÕÉ« ²Ëµ¥±íÊ¾
+	//å®šä¹‰ å­—ä½“é¢œè‰² èœå•è¡¨ç¤º
 	final int FONT_RED = 0x116;
 	final int FONT_BLUE = 0x117;
 	final int FONT_GREEN = 0x118;
@@ -1479,26 +1479,26 @@ public class MainActivity extends Activity{
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		SubMenu fontmenu = menu.addSubMenu("×ÖÌå´óĞ¡");
+		SubMenu fontmenu = menu.addSubMenu("å­—ä½“å¤§å°");
 		fontmenu.setIcon(R.drawable.b23_small);
 		fontmenu.setHeaderIcon(R.drawable.b23_small);
-		fontmenu.setHeaderTitle("Ñ¡Ôñ×ÖÌå´óĞ¡");
-		fontmenu.add(0, FONT_10, 0, "10ºÅ×ÖÌå");
-		fontmenu.add(0, FONT_12, 0, "12ºÅ×ÖÌå");
-		fontmenu.add(0, FONT_14, 0, "14ºÅ×ÖÌå");
-		fontmenu.add(0, FONT_16, 0, "16ºÅ×ÖÌå");
-		fontmenu.add(0, FONT_18, 0, "18ºÅ×ÖÌå");
+		fontmenu.setHeaderTitle("é€‰æ‹©å­—ä½“å¤§å°");
+		fontmenu.add(0, FONT_10, 0, "10å·å­—ä½“");
+		fontmenu.add(0, FONT_12, 0, "12å·å­—ä½“");
+		fontmenu.add(0, FONT_14, 0, "14å·å­—ä½“");
+		fontmenu.add(0, FONT_16, 0, "16å·å­—ä½“");
+		fontmenu.add(0, FONT_18, 0, "18å·å­—ä½“");
 		
-		menu.add(0, PLAIN_ITEM, 0, "×ÖÌåĞÎ×´");
+		menu.add(0, PLAIN_ITEM, 0, "å­—ä½“å½¢çŠ¶");
 		
-		SubMenu colormenu = menu.addSubMenu("×ÖÌåÑÕÉ«");
+		SubMenu colormenu = menu.addSubMenu("å­—ä½“é¢œè‰²");
 		colormenu.setIcon(R.drawable.b23_small);
 		colormenu.setHeaderIcon(R.drawable.b23_small);
-		colormenu.setHeaderTitle("Ñ¡Ôñ×ÖÌåÑÕÉ«");
-		colormenu.add(0, FONT_RED, 0, "ºìÉ«");
-		colormenu.add(0, FONT_BLUE, 0, "À¶É«");
-		//MenuItem menuItem = colormenu.add(0, FONT_GREEN, 0, "ÂÌÉ«");
-		MenuItem menuItem = colormenu.add("ÂÌÉ«");
+		colormenu.setHeaderTitle("é€‰æ‹©å­—ä½“é¢œè‰²");
+		colormenu.add(0, FONT_RED, 0, "çº¢è‰²");
+		colormenu.add(0, FONT_BLUE, 0, "è“è‰²");
+		//MenuItem menuItem = colormenu.add(0, FONT_GREEN, 0, "ç»¿è‰²");
+		MenuItem menuItem = colormenu.add("ç»¿è‰²");
 		menuItem.setIntent(new Intent(this, OtherActivity.class));
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -1532,7 +1532,7 @@ public class MainActivity extends Activity{
 			textView.setTextColor(Color.GREEN);
 			break;
 		case PLAIN_ITEM:
-			//Toast.makeText(MainActivity.this, "Ôİ²»Ö§³Ö´Ë¹¦ÄÜ", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(MainActivity.this, "æš‚ä¸æ”¯æŒæ­¤åŠŸèƒ½", Toast.LENGTH_SHORT).show();
 			break;
 		default:
 			break;
@@ -1565,13 +1565,13 @@ public class MainActivity extends Activity{
 	}
 	
 	public void showSpinner(View source){
-		ProgressDialog.show(MainActivity.this, "ÈÎÎñ1Ö´ĞĞÖĞ", "ÈÎÎñÖ´ĞĞÖĞ...ÇëµÈ´ı", true,true);
+		ProgressDialog.show(MainActivity.this, "ä»»åŠ¡1æ‰§è¡Œä¸­", "ä»»åŠ¡æ‰§è¡Œä¸­...è¯·ç­‰å¾…", true,true);
 	}
 	
 	public void showIndeterminate(View source){
 		ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
-		progressDialog.setTitle("ÈÎÎñ2Ö´ĞĞÖĞ");
-		progressDialog.setMessage("ÈÎÎñÖ´ĞĞÖĞ...ÇëÉÔºò");
+		progressDialog.setTitle("ä»»åŠ¡2æ‰§è¡Œä¸­");
+		progressDialog.setMessage("ä»»åŠ¡æ‰§è¡Œä¸­...è¯·ç¨å€™");
 		progressDialog.setCancelable(true);
 		progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		progressDialog.setIndeterminate(true);
@@ -1583,8 +1583,8 @@ public class MainActivity extends Activity{
 		hasdate = 0;
 		progressDialog1 = new ProgressDialog(MainActivity.this);
 		progressDialog1.setMax(MAXPROCESS);
-		progressDialog1.setTitle("ÈÎÎñ3Ö´ĞĞÖĞ");
-		progressDialog1.setMessage("ÈÎÎñÖ´ĞĞÖĞ...");
+		progressDialog1.setTitle("ä»»åŠ¡3æ‰§è¡Œä¸­");
+		progressDialog1.setMessage("ä»»åŠ¡æ‰§è¡Œä¸­...");
 		progressDialog1.setCancelable(false);
 		progressDialog1.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		progressDialog1.setIndeterminate(false);
@@ -1640,7 +1640,7 @@ public class MainActivity extends Activity{
 								int dayOfMonth) {
 							// TODO Auto-generated method stub
 							TextView textView = (TextView)findViewById(R.id.textView1) ;
-							textView.setText("Ñ¡ÔñµÄÊ±¼ä:"+year+"Äê"+(monthOfYear+1)+"ÔÂ"+dayOfMonth+"ÈÕ");
+							textView.setText("é€‰æ‹©çš„æ—¶é—´:"+year+"å¹´"+(monthOfYear+1)+"æœˆ"+dayOfMonth+"æ—¥");
 						}
 					},
 						calendar.get(Calendar.YEAR), 
@@ -1665,7 +1665,7 @@ public class MainActivity extends Activity{
 							public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 								// TODO Auto-generated method stub
 								TextView textView = (TextView)findViewById(R.id.textView1) ;
-								textView.setText("Ñ¡ÔñµÄÊ±¼ä:"+hourOfDay+"Ê±"+minute+"·Ö");
+								textView.setText("é€‰æ‹©çš„æ—¶é—´:"+hourOfDay+"æ—¶"+minute+"åˆ†");
 							}
 						}, calendar.get(Calendar.HOUR), Calendar.MINUTE, false);
 				timePickerDialog.show();
@@ -1714,29 +1714,29 @@ public class MainActivity extends Activity{
 		dialogctr = false;
 	}
 	
-	//-------------------------------------------------ÏÔÊ¾ÄÚÈİ
+	//-------------------------------------------------æ˜¾ç¤ºå†…å®¹
 	private void showText(int type,String str){
 		  TextView textView = (TextView)findViewById(R.id.dialogView1);
 		  StringBuffer stringBuffer = new StringBuffer();
 		  
 		  switch(type){
 		  case 1:
-			  stringBuffer.append("¼òµ¥¶Ô»°¿ò-");
+			  stringBuffer.append("ç®€å•å¯¹è¯æ¡†-");
 			  break;
 		  case 2:
-			  stringBuffer.append("¼òµ¥ÁĞ±íÏî¶Ô»°¿ò-");
+			  stringBuffer.append("ç®€å•åˆ—è¡¨é¡¹å¯¹è¯æ¡†-");
 			  break;
 		  case 3:
-			  stringBuffer.append("µ¥Ñ¡ÁĞ±íÏî¶Ô»°¿ò-");
+			  stringBuffer.append("å•é€‰åˆ—è¡¨é¡¹å¯¹è¯æ¡†-");
 			  break;
 		  case 4:
-			  stringBuffer.append("¶àÑ¡ÁĞ±íÏî¶Ô»°¿ò-");
+			  stringBuffer.append("å¤šé€‰åˆ—è¡¨é¡¹å¯¹è¯æ¡†-");
 			  break;
 		  case 5:
-			  stringBuffer.append("×Ô¶¨ÒåÁĞ±íÏî-");
+			  stringBuffer.append("è‡ªå®šä¹‰åˆ—è¡¨é¡¹-");
 			  break;
 		  case 6:
-			  stringBuffer.append("×Ô¶¨ÒåView-");
+			  stringBuffer.append("è‡ªå®šä¹‰View-");
 			  break;
 		  case 7:
 			  break;
@@ -1751,48 +1751,48 @@ public class MainActivity extends Activity{
 		  textView.setText(stringBuffer.toString());
 	}
 	
-	//------------------------------------------------°´Å¥ÉèÖÃ
+	//------------------------------------------------æŒ‰é’®è®¾ç½®
 	private void setPositiveButton(AlertDialog.Builder builder){
-		builder.setPositiveButton("È·¶¨", new DialogInterface.OnClickListener() {
+		builder.setPositiveButton("ç¡®å®š", new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
-				showText(1,"¡¾È·¶¨¼ü¡¿");
+				showText(1,"ã€ç¡®å®šé”®ã€‘");
 				dialogctr = false;
 			}
 		});
 	}
 	
 	private void setNegativeButton(AlertDialog.Builder builder){
-		builder.setNegativeButton("È¡Ïû", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton("å–æ¶ˆ", new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
-				showText(1,"¡¾È¡Ïû¼ü¡¿");
+				showText(1,"ã€å–æ¶ˆé”®ã€‘");
 				dialogctr = false;
 			}
 		});
 	}
 	
 	private void setNeutralButton(AlertDialog.Builder builder){
-		builder.setNegativeButton("ÖĞÁ¢", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton("ä¸­ç«‹", new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
-				showText(1,"¡¾ÖĞÁ¢¼ü¡¿");
+				showText(1,"ã€ä¸­ç«‹é”®ã€‘");
 				dialogctr = false;
 			}
 		});
 	}
-	//---------------------------------------------------¼òµ¥¶Ô»°¿ò´úÂë
+	//---------------------------------------------------ç®€å•å¯¹è¯æ¡†ä»£ç 
 	public void simpleDialog(View source){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("¼òµ¥¶Ô»°¿ò±êÌâ");
+		builder.setTitle("ç®€å•å¯¹è¯æ¡†æ ‡é¢˜");
 		builder.setIcon(R.drawable.b23_small);
-		builder.setMessage("¼òµ¥¶Ô»°¿òÄÚÈİµÚÒ»ĞĞ\nÄÚÈİµÚ¶şĞĞ");
+		builder.setMessage("ç®€å•å¯¹è¯æ¡†å†…å®¹ç¬¬ä¸€è¡Œ\nå†…å®¹ç¬¬äºŒè¡Œ");
 		setPositiveButton(builder);
 		setNegativeButton(builder);
 		builder.create();
@@ -1804,12 +1804,12 @@ public class MainActivity extends Activity{
 		simpleDialog(source);
 	}
 	
-	//-------------------------------------------------¼òµ¥ÁĞ±íÏî¶Ô»°¿ò
+	//-------------------------------------------------ç®€å•åˆ—è¡¨é¡¹å¯¹è¯æ¡†
 	final private String[] items = new String[]{
-			"ËÕÖİÊĞÃñ¿¨",
-			"ËÕÖİ¶ÀÊûºş¿¨",
-			"ËÕÖİÎÄÌå¿¨",
-			"½»Í¨ÁªºÏ¿¨Æ¬",
+			"è‹å·å¸‚æ°‘å¡",
+			"è‹å·ç‹¬å¢…æ¹–å¡",
+			"è‹å·æ–‡ä½“å¡",
+			"äº¤é€šè”åˆå¡ç‰‡",
 	};
 	final private boolean[] choice = new boolean[]{
 			false,false,false,false,
@@ -1817,14 +1817,14 @@ public class MainActivity extends Activity{
 	
 	public void simpleListDialog(View source){		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("¼òµ¥ÁĞ±í¶Ô»°¿ò±êÌâ");
+		builder.setTitle("ç®€å•åˆ—è¡¨å¯¹è¯æ¡†æ ‡é¢˜");
 		builder.setIcon(R.drawable.b23_small);
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
-				showText(2,"Ñ¡Ôñ¶ÔÏó:"+items[which]);
+				showText(2,"é€‰æ‹©å¯¹è±¡:"+items[which]);
 			}
 		});
 		//setPositiveButton(builder);
@@ -1839,16 +1839,16 @@ public class MainActivity extends Activity{
 		simpleListDialog(source);
 	}
 	
-	//-------------------------------------------------µ¥ÏîÑ¡Ôñ¶Ô»°¿ò
+	//-------------------------------------------------å•é¡¹é€‰æ‹©å¯¹è¯æ¡†
 	public void singleChioceDialog(View source){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("µ¥ÏîÁĞ±í¶Ô»°¿ò").setIcon(R.drawable.b23_small)
+		builder.setTitle("å•é¡¹åˆ—è¡¨å¯¹è¯æ¡†").setIcon(R.drawable.b23_small)
 			   .setSingleChoiceItems(items, 100, new DialogInterface.OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
-					showText(7,"Ñ¡Ôñ¶ÔÏó:"+items[which]);
+					showText(7,"é€‰æ‹©å¯¹è±¡:"+items[which]);
 				}
 			});
 		setNegativeButton(builder);
@@ -1860,16 +1860,16 @@ public class MainActivity extends Activity{
 		singleChioceDialog(source);
 	}
 	
-	//-------------------------------------------------¶àÏîÑ¡Ôñ¶Ô»°¿ò	
+	//-------------------------------------------------å¤šé¡¹é€‰æ‹©å¯¹è¯æ¡†	
 	public void multChioceDialog(View source){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("¶àÏîÁĞ±í¶Ô»°¿ò").setIcon(R.drawable.b23_small)
+		builder.setTitle("å¤šé¡¹åˆ—è¡¨å¯¹è¯æ¡†").setIcon(R.drawable.b23_small)
 		       .setMultiChoiceItems(items, choice, new DialogInterface.OnMultiChoiceClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 					// TODO Auto-generated method stub
-					showText(8,"Ñ¡Ôñ¶ÔÏó:"+which + "ÊÇ·ñÑ¡Ôñ:"+isChecked);
+					showText(8,"é€‰æ‹©å¯¹è±¡:"+which + "æ˜¯å¦é€‰æ‹©:"+isChecked);
 				}
 			});
 		setNegativeButton(builder);
@@ -1881,10 +1881,10 @@ public class MainActivity extends Activity{
 		multChioceDialog(source);
 	}
 	
-	//------------------------------------------------×Ô¶¨ÒåÁĞ±íÏî¶Ô»°¿ò
+	//------------------------------------------------è‡ªå®šä¹‰åˆ—è¡¨é¡¹å¯¹è¯æ¡†
 	public void customListDialog(View source){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("×Ô¶¨ÒåÁĞ±íÏî¶Ô»°¿ò").setIcon(R.drawable.b23_small)
+		builder.setTitle("è‡ªå®šä¹‰åˆ—è¡¨é¡¹å¯¹è¯æ¡†").setIcon(R.drawable.b23_small)
 		       .setAdapter(new ArrayAdapter<String>(this, R.layout.item_array, items), null);
 		setNegativeButton(builder);
 		setPositiveButton(builder);
@@ -1895,11 +1895,11 @@ public class MainActivity extends Activity{
 		customListDialog(source);
 	}
 	
-	//---------------------------------------------×Ô¶¨ÒåView
+	//---------------------------------------------è‡ªå®šä¹‰View
 	public void customView(View source){
 		TableLayout tableLayout = (TableLayout)getLayoutInflater().inflate(R.layout.tablelayout_log, null);
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("×Ô¶¨ÒåView¿òÍ¼").setIcon(R.drawable.b23_small)
+		builder.setTitle("è‡ªå®šä¹‰Viewæ¡†å›¾").setIcon(R.drawable.b23_small)
 		       .setView(tableLayout);
 		setNegativeButton(builder);
 		setPositiveButton(builder);
@@ -1941,10 +1941,10 @@ public class MainActivity extends Activity{
 		
 		Notification notification = new Notification.Builder(this)
 			.setAutoCancel(true)
-			.setTicker("QQÏûÏ¢-Ğ¡Óñ·¢À´ÏûÏ¢")
+			.setTicker("QQæ¶ˆæ¯-å°ç‰å‘æ¥æ¶ˆæ¯")
 			.setSmallIcon(R.drawable.image1)
-			.setContentTitle("Í¨ÖªÄÚÈİ±êÌâ")
-			.setContentText("ÕâÊÇNotificationµÄÊµ¼ÊÄÚÈİ--»¹Ç® »¹Ç®AAAAAAAAAA")
+			.setContentTitle("é€šçŸ¥å†…å®¹æ ‡é¢˜")
+			.setContentText("è¿™æ˜¯Notificationçš„å®é™…å†…å®¹--è¿˜é’± è¿˜é’±AAAAAAAAAA")
 			.setDefaults(Notification.DEFAULT_ALL)
 			.setWhen(System.currentTimeMillis())
 			.setContentIntent(pendingIntent)
@@ -1959,20 +1959,20 @@ public class MainActivity extends Activity{
 	}
 */	
 /*	
-	/* MainActivity ĞèÒª¼Ì³Ğ  TabActivity *//*
+	/* MainActivity éœ€è¦ç»§æ‰¿  TabActivity *//*
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.tabhost);
 		
 		TabHost tabHost  = getTabHost();
 		
-		TabSpec  tabSpec1 = tabHost.newTabSpec("tab01").setIndicator("ÒÑ½Óµç»°").setContent(R.id.tab01);
+		TabSpec  tabSpec1 = tabHost.newTabSpec("tab01").setIndicator("å·²æ¥ç”µè¯").setContent(R.id.tab01);
 		tabHost.addTab(tabSpec1);
 		
-		TabSpec  tabSpec2 = tabHost.newTabSpec("tab02").setIndicator("ºô³öµç»°").setContent(R.id.tab02);
+		TabSpec  tabSpec2 = tabHost.newTabSpec("tab02").setIndicator("å‘¼å‡ºç”µè¯").setContent(R.id.tab02);
 		tabHost.addTab(tabSpec2);
 		
-		TabSpec  tabSpec3 = tabHost.newTabSpec("tab03").setIndicator("Î´½Óµç»°").setContent(R.id.tab03);
+		TabSpec  tabSpec3 = tabHost.newTabSpec("tab03").setIndicator("æœªæ¥ç”µè¯").setContent(R.id.tab03);
 		tabHost.addTab(tabSpec3);
 	}
 */	
@@ -1983,7 +1983,7 @@ public class MainActivity extends Activity{
 			"aaaaaaaa",
 			"aaaawddddqd",
 			"bbbbbbb",
-			"ÖĞ¹úÈËµÄÎ¿ÎÊ",
+			"ä¸­å›½äººçš„æ…°é—®",
 			"32222222222",
 	};
 	
@@ -2000,14 +2000,14 @@ public class MainActivity extends Activity{
 		searchView = (SearchView)findViewById(R.id.searchView);
 		searchView.setIconifiedByDefault(true);
 		searchView.setSubmitButtonEnabled(true);
-		searchView.setQueryHint("²éÕÒ");
+		searchView.setQueryHint("æŸ¥æ‰¾");
 		
 		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 			
 			@Override
 			public boolean onQueryTextSubmit(String query) {
 				// TODO Auto-generated method stub
-				Toast.makeText(MainActivity.this, "²éÕÒÄÚÈİ"+query, Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, "æŸ¥æ‰¾å†…å®¹"+query, Toast.LENGTH_SHORT).show();
 				return true;
 			}
 			
@@ -2043,7 +2043,7 @@ public class MainActivity extends Activity{
 			@Override
 			public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
 				// TODO Auto-generated method stub
-				Toast.makeText(MainActivity.this, "ÄãÑ¡ÔñµÄºÅÂë:"+newVal+"Ö®Ç°µÄºÅÂë:"+oldVal, Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, "ä½ é€‰æ‹©çš„å·ç :"+newVal+"ä¹‹å‰çš„å·ç :"+oldVal, Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
@@ -2101,7 +2101,7 @@ public class MainActivity extends Activity{
 	private void showSelectDate(int year,int month,int monthday,int hour,int minute){
 		
 		textView   = (TextView)findViewById(R.id.pickshow);
-		textView.setText( year+"Äê"+(month+1)+"ÔÂ"+monthday+ "ºÅ  "+hour+":"+minute);
+		textView.setText( year+"å¹´"+(month+1)+"æœˆ"+monthday+ "å·  "+hour+":"+minute);
 		textView.setTextColor(R.color.color1);
 	}
 
@@ -2125,7 +2125,7 @@ public class MainActivity extends Activity{
 			public void onSelectedDayChange(CalendarView view, int year, int month,
 					int dayOfMonth) {
 				// TODO Auto-generated method stub
-				Toast.makeText(MainActivity.this, year+"Äê"+(month+1)+"ÔÂ"+dayOfMonth+ "ºÅ", Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, year+"å¹´"+(month+1)+"æœˆ"+dayOfMonth+ "å·", Toast.LENGTH_SHORT).show();
 			}
 		});
 	}	
@@ -2147,7 +2147,7 @@ public class MainActivity extends Activity{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast toast = Toast.makeText(MainActivity.this, "ÕâÊÇÒ»¸ö¼òµ¥µÄÌáÊ¾ĞÅÏ¢", Toast.LENGTH_SHORT);
+				Toast toast = Toast.makeText(MainActivity.this, "è¿™æ˜¯ä¸€ä¸ªç®€å•çš„æç¤ºä¿¡æ¯", Toast.LENGTH_SHORT);
 				toast.setGravity(Gravity.TOP | Gravity.CENTER, 0, 0);
 				toast.show();
 			}
@@ -2167,7 +2167,7 @@ public class MainActivity extends Activity{
 				imageview.setImageResource(R.drawable.red);
 				
 				TextView textview = new TextView(MainActivity.this);
-				textview.setText("Ö»ÊÇÒ»¸ö¹¹ÔìµÄÌáÊ¾ĞÅÏ¢");
+				textview.setText("åªæ˜¯ä¸€ä¸ªæ„é€ çš„æç¤ºä¿¡æ¯");
 				textview.setTextColor(Color.RED);
 				textview.setTextSize(24);
 				
@@ -2360,7 +2360,7 @@ public class MainActivity extends Activity{
 				/******************************************************************************************
 				******************************************************************************************
 				******************************************************************************************
-				********************************     Î´½â¾öµÄÎÊÌâ           *************************************
+				********************************     æœªè§£å†³çš„é—®é¢˜           *************************************
 				******************************************************************************************
 				******************************************************************************************
 				******************************************************************************************//*
@@ -2451,11 +2451,11 @@ public class MainActivity extends Activity{
 		
 		textView = (TextView)findViewById(R.id.show);
 		list = new ArrayList<String>();
-		list.add("Èı¹úÑİÒÕ");
-		list.add("ºìÂ¥ÃÎ");
-		list.add("Ë®ä°´«");
-		list.add("Î÷ÓÎ¼Ç");
-		list.add("Î÷ÓÎ¼Ç");
+		list.add("ä¸‰å›½æ¼”è‰º");
+		list.add("çº¢æ¥¼æ¢¦");
+		list.add("æ°´æµ’ä¼ ");
+		list.add("è¥¿æ¸¸è®°");
+		list.add("è¥¿æ¸¸è®°");
 		list.add("12345");
 		list.add("2132132132131");
 		list.add("fewfwfwqwfwfq");
@@ -2464,7 +2464,7 @@ public class MainActivity extends Activity{
 		Spinner spinner = (Spinner)findViewById(R.id.auto_spinner2);
 		Spinner spinner2 = (Spinner)findViewById(R.id.static_spinner1);
 		
-		spinner.setPrompt("Ñ¡ÔñÄãÏ²»¶µÄÊé¼®");
+		spinner.setPrompt("é€‰æ‹©ä½ å–œæ¬¢çš„ä¹¦ç±");
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, list);
 		
 		spinner.setAdapter(arrayAdapter);
@@ -2475,7 +2475,7 @@ public class MainActivity extends Activity{
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
 				// TODO Auto-generated method stub
-				textView.setText("ÄúÏ²»¶µÄÊé¼®: "+arg0.getItemAtPosition(arg2).toString());
+				textView.setText("æ‚¨å–œæ¬¢çš„ä¹¦ç±: "+arg0.getItemAtPosition(arg2).toString());
 			}
 
 			@Override
@@ -2507,16 +2507,16 @@ public class MainActivity extends Activity{
 	
 /*	
 	final private String[] armtype  = new String[]{
-			"Éñ×å±øÖÖ",
-			"³æ×å±øÖÖ",
-			"ÈË×å±øÖÖ",
-			"¾«Áé±øÖÖ",
+			"ç¥æ—å…µç§",
+			"è™«æ—å…µç§",
+			"äººæ—å…µç§",
+			"ç²¾çµå…µç§",
 	};
 	final private String[][] arms = new String[][]{
-			{"¿ñÕ½Ê¿","ÁúÆïÊ¿","ºÚ°µÊ¥ÌÃ","µç±ø","Ìì±ø",},
-			{"Ğ¡¹·","´ÌÉß","·ÉÁú","µØÓüÉñ¹ê","ºÚÆ¤",},
-			{"»úÇ¹±ø","»¤Ê¿MM","ÓÄÁé","×Ô±¬·É»ú",},
-			{"¹­¼ıÊÖ","´øµ¶»¤ÎÀµÚÈı·½iÈø·ği°¢·²ÎÒ·ğ·ğÅ¶Å¶iwe",},
+			{"ç‹‚æˆ˜å£«","é¾™éª‘å£«","é»‘æš—åœ£å ‚","ç”µå…µ","å¤©å…µ",},
+			{"å°ç‹—","åˆºè›‡","é£é¾™","åœ°ç‹±ç¥é¾Ÿ","é»‘çš®",},
+			{"æœºæªå…µ","æŠ¤å£«MM","å¹½çµ","è‡ªçˆ†é£æœº",},
+			{"å¼“ç®­æ‰‹","å¸¦åˆ€æŠ¤å«ç¬¬ä¸‰æ–¹iè¨ä½›ié˜¿å‡¡æˆ‘ä½›ä½›å“¦å“¦iwe",},
 	};
 	
 	@Override
@@ -2634,12 +2634,12 @@ public class MainActivity extends Activity{
 	
 	final private String[] books = new String[]{
 			"",
-			"·è¿ñJAVA½²Òå",
-			"·è¿ñµÄÈËÃñÈÕ±¨",
-			"·è¿ñµÄs°¢Èø·¨Èöµ©·¨",
-			"·è¿ñµÄÊÕ·Ñ·şÎñ",
-			"ÖĞ¹úµÄµÄÎŞÇî´óµÄ",
-			"ÖĞ¹úµÄÎ¢»ı·ÖÎÒ¾Í·şÎñ·¶Î§Åú·¢¼ÛÎª¼¡·ô"
+			"ç–¯ç‹‚JAVAè®²ä¹‰",
+			"ç–¯ç‹‚çš„äººæ°‘æ—¥æŠ¥",
+			"ç–¯ç‹‚çš„sé˜¿è¨æ³•æ’’æ—¦æ³•",
+			"ç–¯ç‹‚çš„æ”¶è´¹æœåŠ¡",
+			"ä¸­å›½çš„çš„æ— ç©·å¤§çš„",
+			"ä¸­å›½çš„å¾®ç§¯åˆ†æˆ‘å°±æœåŠ¡èŒƒå›´æ‰¹å‘ä»·ä¸ºè‚Œè‚¤"
 	};
 			
 	@Override
@@ -2662,19 +2662,19 @@ public class MainActivity extends Activity{
 */	
 /*	
 	final private String[] namesStrings = new String[]{
-		"¶àÀ­¶à","ÀîÇåÕÕ","ÂíÎÄ²Å","»¢×Ó","ÖÜĞÇĞÇ","¶ş¹·×Ó","¶¬ÌìÀïµÄÒ»°Ñ»ğ »ğ »ğ »ğ »ğ »ğ »ğ »ğ »ğ »ğ","Îò¿Õ"	,"ĞÄÈç",
+		"å¤šæ‹‰å¤š","ææ¸…ç…§","é©¬æ–‡æ‰","è™å­","å‘¨æ˜Ÿæ˜Ÿ","äºŒç‹—å­","å†¬å¤©é‡Œçš„ä¸€æŠŠç« ç« ç« ç« ç« ç« ç« ç« ç« ç«","æ‚Ÿç©º"	,"å¿ƒå¦‚",
 	};
 	
 	final private String[] deceStrings = new String[]{
-			"Ò»¸ö¶ş´ÎÔªÊÀ½çµÄÈË",
-			"Ò»¸öÉÃ³¤ÎÄÑ§µÄÅ®×Ó",
-			"Ò»¸öÃÆÉ§µÄÄĞÈË",
-			"ºÈÁË¶ş¹øÍ·µÄÉ§Äê",
-			"Ï²¾çÖ®Íõ",
-			"¹ÇÍ·µÄ1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-			"¼ÅÄ¯É³ÖŞÀä",
-			"ÈçÀ´ÉñÕÆ",
-			"×îÃÀµÄÈË",
+			"ä¸€ä¸ªäºŒæ¬¡å…ƒä¸–ç•Œçš„äºº",
+			"ä¸€ä¸ªæ“…é•¿æ–‡å­¦çš„å¥³å­",
+			"ä¸€ä¸ªé—·éªšçš„ç”·äºº",
+			"å–äº†äºŒé”…å¤´çš„éªšå¹´",
+			"å–œå‰§ä¹‹ç‹",
+			"éª¨å¤´çš„1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+			"å¯‚å¯æ²™æ´²å†·",
+			"å¦‚æ¥ç¥æŒ",
+			"æœ€ç¾çš„äºº",
 	};
 	
 	final private int[] imageidID = new int[]{
@@ -2717,12 +2717,12 @@ public class MainActivity extends Activity{
 */
 /*	
 	final String[] arrayStrings = new String[]{
-			"ÖÜĞÇ³Û",
-			"ÁõµÂ»ª",
-			"Â½Òã",
-			"ÕÅÒã",
-			"½ªÎÄ",
-			"Â¬Ñ©ËÉ",
+			"å‘¨æ˜Ÿé©°",
+			"åˆ˜å¾·å",
+			"é™†æ¯…",
+			"å¼ æ¯…",
+			"å§œæ–‡",
+			"å¢é›ªæ¾",
 	};
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -2860,7 +2860,7 @@ public class MainActivity extends Activity{
 					switcher.setChecked(false);
 				}
 				
-				String tip = (buttonView.getId() == R.id.toggle?"²Ù×÷Õß:Toggle":"²Ù×÷Õß:Switcher");
+				String tip = (buttonView.getId() == R.id.toggle?"æ“ä½œè€…:Toggle":"æ“ä½œè€…:Switcher");
 				textView.setText(tip);
 			}
 		};
@@ -2882,10 +2882,10 @@ public class MainActivity extends Activity{
 	public String showInfo(int checkedId,String red,String bule,String purple){
 		StringBuffer stringBuffer = new StringBuffer();
 		
-		stringBuffer.append((checkedId == R.id.male)?"ÄúµÄĞÔ±ğÊÇÄĞ":"ÄúµÄĞÔ±ğÊÇÅ®");
+		stringBuffer.append((checkedId == R.id.male)?"æ‚¨çš„æ€§åˆ«æ˜¯ç”·":"æ‚¨çš„æ€§åˆ«æ˜¯å¥³");
 		
 		if(red != null || bule != null || purple != null)
-			stringBuffer.append("  ÄãÏ²»¶µÄÑÕÉ«:");
+			stringBuffer.append("  ä½ å–œæ¬¢çš„é¢œè‰²:");
 		
 		if(red != null){
 			stringBuffer.append(red).append(" ");
@@ -2927,7 +2927,7 @@ public class MainActivity extends Activity{
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				// TODO Auto-generated method stub
 				if(isChecked){
-					red = "ºìÉ«";
+					red = "çº¢è‰²";
 					
 				}else {
 					red=null;
@@ -2942,7 +2942,7 @@ public class MainActivity extends Activity{
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				// TODO Auto-generated method stub
 				if(isChecked){
-					bule = "À¶É«";
+					bule = "è“è‰²";
 					
 				}else {
 					bule=null;
@@ -2957,7 +2957,7 @@ public class MainActivity extends Activity{
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				// TODO Auto-generated method stub
 				if(isChecked){
-					purple = "×ÏÉ«";
+					purple = "ç´«è‰²";
 					
 				}else {
 					purple=null;
@@ -2968,12 +2968,12 @@ public class MainActivity extends Activity{
 	}
 */
 	
-/* Íø¸ñ²¼¾Ö 2016.12.22
+/* ç½‘æ ¼å¸ƒå±€ 2016.12.22
 	GridLayout gridLayout;
 	
 	String[] chars = new String[]{
-			"7","8","9","¡Â",
-			"4","5","6","¡Á",
+			"7","8","9","Ã·",
+			"4","5","6","Ã—",
 			"1","2","3","-",
 			"-","0","=","+",
 	};
@@ -2997,7 +2997,7 @@ public class MainActivity extends Activity{
 	}
 */	
 	
-/*	 //  ÎªÖ¡²¼¾Ö´úÂë 2016.12.21
+/*	 //  ä¸ºå¸§å¸ƒå±€ä»£ç  2016.12.21
 	
 	private int currentcolor = 0;
 	
@@ -3045,7 +3045,7 @@ public class MainActivity extends Activity{
 		for(int i = 0;i<name.length;i++){
 			textView[i] = (TextView)findViewById(name[i]);
 		}
-		//---------------¶¨ÒåÒ»¸öÖÜÆÚÏß³Ì
+		//---------------å®šä¹‰ä¸€ä¸ªå‘¨æœŸçº¿ç¨‹
         new Timer().schedule(new TimerTask() {
 			
 			@Override
