@@ -166,6 +166,8 @@ public class MainActivity extends Activity{
 	Button bnButton = null;
 	int imagecount = 0;
 	
+	int k;
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
